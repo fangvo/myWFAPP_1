@@ -33,7 +33,9 @@ namespace WindowsFormsApplication1
             long bik = Int64.Parse(textBoxBIK.Text);
             SqlConnection conn = new SqlConnection(@"Data Source=FANGVO-PC\SQLEXPRESS;Initial Catalog=MyDB;Integrated Security=True");
             SqlCommand cmd = conn.CreateCommand();
-            cmd.CommandText = @"INSERT INTO Clients VALUES ( '" + client + "', '" + adres + "', '" + phone + "', " + inn + ", " + kpp + ", '" + bank + "', " + rs + ", " + ks+ ", " + bik+ ");";
+           // cmd.CommandText = String.Format("INSERT INTO Clients VALUES ( '{0}', '{1}', '{2}', {3], {4}, '{5}', {6}, {7}, {8});", client, adres, phone, inn, kpp, bank, rs, ks, bik);
+            cmd.CommandText = String.Format("INSERT INTO Clients VALUES ( '" + client + "', '" + adres + "', '" + phone + "', " + inn + ", " + kpp + ", '" + bank + "', " + rs + ", " + ks + ", " + bik + ");");
+
             conn.Open();
             cmd.ExecuteNonQuery();
             conn.Close();

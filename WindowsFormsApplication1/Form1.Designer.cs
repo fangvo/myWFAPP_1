@@ -32,9 +32,9 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dataGridViewClients = new System.Windows.Forms.DataGridView();
             this.button8 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button_Client_new = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.buttonClient_Del = new System.Windows.Forms.Button();
+            this.buttonClient_new = new System.Windows.Forms.Button();
+            this.buttonClient_Save = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.button3 = new System.Windows.Forms.Button();
@@ -64,9 +64,9 @@
             // 
             this.tabPage3.Controls.Add(this.dataGridViewClients);
             this.tabPage3.Controls.Add(this.button8);
-            this.tabPage3.Controls.Add(this.button7);
-            this.tabPage3.Controls.Add(this.button_Client_new);
-            this.tabPage3.Controls.Add(this.button5);
+            this.tabPage3.Controls.Add(this.buttonClient_Del);
+            this.tabPage3.Controls.Add(this.buttonClient_new);
+            this.tabPage3.Controls.Add(this.buttonClient_Save);
             this.tabPage3.Controls.Add(this.button2);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
@@ -94,35 +94,35 @@
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
-            // button7
+            // buttonClient_Del
             // 
-            this.button7.Location = new System.Drawing.Point(369, 6);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 8;
-            this.button7.Text = "delete";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.buttonClient_Del.Location = new System.Drawing.Point(369, 6);
+            this.buttonClient_Del.Name = "buttonClient_Del";
+            this.buttonClient_Del.Size = new System.Drawing.Size(75, 23);
+            this.buttonClient_Del.TabIndex = 8;
+            this.buttonClient_Del.Text = "delete";
+            this.buttonClient_Del.UseVisualStyleBackColor = true;
+            this.buttonClient_Del.Click += new System.EventHandler(this.button7_Click);
             // 
-            // button_Client_new
+            // buttonClient_new
             // 
-            this.button_Client_new.Location = new System.Drawing.Point(288, 6);
-            this.button_Client_new.Name = "button_Client_new";
-            this.button_Client_new.Size = new System.Drawing.Size(75, 23);
-            this.button_Client_new.TabIndex = 7;
-            this.button_Client_new.Text = "new";
-            this.button_Client_new.UseVisualStyleBackColor = true;
-            this.button_Client_new.Click += new System.EventHandler(this.button6_Click);
+            this.buttonClient_new.Location = new System.Drawing.Point(288, 6);
+            this.buttonClient_new.Name = "buttonClient_new";
+            this.buttonClient_new.Size = new System.Drawing.Size(75, 23);
+            this.buttonClient_new.TabIndex = 7;
+            this.buttonClient_new.Text = "new/edit";
+            this.buttonClient_new.UseVisualStyleBackColor = true;
+            this.buttonClient_new.Click += new System.EventHandler(this.button6_Click);
             // 
-            // button5
+            // buttonClient_Save
             // 
-            this.button5.Location = new System.Drawing.Point(207, 5);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 6;
-            this.button5.Text = "save";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.buttonClient_Save.Location = new System.Drawing.Point(207, 5);
+            this.buttonClient_Save.Name = "buttonClient_Save";
+            this.buttonClient_Save.Size = new System.Drawing.Size(75, 23);
+            this.buttonClient_Save.TabIndex = 6;
+            this.buttonClient_Save.Text = "save";
+            this.buttonClient_Save.UseVisualStyleBackColor = true;
+            this.buttonClient_Save.Click += new System.EventHandler(this.button5_Click);
             // 
             // button2
             // 
@@ -258,9 +258,9 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.DataGridView dataGridViewGoods;
         private System.Windows.Forms.Button buttonAdd_Goods;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button_Client_new;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button buttonClient_Del;
+        private System.Windows.Forms.Button buttonClient_new;
+        private System.Windows.Forms.Button buttonClient_Save;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.DataGridView dataGridViewClients;
         private System.Windows.Forms.Button button3;

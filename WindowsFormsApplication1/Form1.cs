@@ -26,17 +26,21 @@ namespace WindowsFormsApplication1
             GoodsDataGrid = new MyDataGrid();
             ClientDataGrid.dataGrid = dataGridViewClients;
             ClientDataGrid.table_name = "Clients";
-            ClientDataGrid.b_save = button5;
-            ClientDataGrid.b_new_edit = b
+            ClientDataGrid.b_save = buttonClient_Save;
+            ClientDataGrid.b_new_edit = buttonClient_new;
+            ClientDataGrid.b_delete = buttonClient_Del;
             GoodsDataGrid.dataGrid = dataGridViewGoods;
             GoodsDataGrid.table_name = "Goods";
-            RefreshDG(ClientDataGrid, button5);
-            RefreshDG(GoodsDataGrid, buttonSave_Goods);
+            GoodsDataGrid.b_save = buttonSave_Goods;
+            GoodsDataGrid.b_new_edit = buttonNew_Goods;
+            GoodsDataGrid.b_delete = buttonDel_Goods;
+            RefreshDG(ClientDataGrid);
+            RefreshDG(GoodsDataGrid);
             
         }
 
 
-        public void RefreshDG(MyDataGrid dg,Button b_save)
+        public void RefreshDG(MyDataGrid dg)
         {
             string sql = "SELECT * FROM " + dg.table_name;
             SqlConnection connection = new SqlConnection(connectionString);
@@ -51,8 +55,51 @@ namespace WindowsFormsApplication1
             dg.dataGrid.DataSource = dg.ds.Tables[dg.table_name];
             dg.dataGrid.ReadOnly = true;
             dg.dataGrid.AllowUserToAddRows = false;
-            b_save.Enabled = false;
+            dg.b_save.Enabled = false;
             dg.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        }
+
+        /// <summary>
+        /// Сохранить измененые даные из датагрид в бд
+        /// </summary>
+        /// <param name="dg"></param>
+
+        private void SaveDG(MyDataGrid dg)
+        {
+            dg.adapter.Update(dg.table);
+            dg.dataGrid.ReadOnly = true;
+            dg.dataGrid.AllowUserToAddRows = false;
+            dg.b_save.Enabled = false;
+            dg.b_new_edit.Enabled = true;
+            dg.b_delete.Enabled = true;
+        }
+
+        /// <summary>
+        /// Включить режим редактирования датагрида
+        /// </summary>
+        /// <param name="dg"></param>
+
+        private void New_EditDG(MyDataGrid dg)
+        {
+            dg.dataGrid.ReadOnly = false;
+            dg.dataGrid.AllowUserToAddRows = true;
+            dg.b_save.Enabled = true;
+            dg.b_new_edit.Enabled = false;
+            dg.b_delete.Enabled = false;
+        }
+
+        /// <summary>
+        /// Удалить выбраную строку
+        /// </summary>
+        /// <param name="dg"></param>
+
+        private void DeleteDG(MyDataGrid dg)
+        {
+            if (MessageBox.Show("Do you want to delete this row ?", "Delete", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                dg.dataGrid.Rows.RemoveAt(dg.dataGrid.SelectedRows[0].Index);
+                dg.adapter.Update(dg.table);
+            }
         }
 
         /// <summary>
@@ -61,39 +108,21 @@ namespace WindowsFormsApplication1
         /// <param name="sender"></param>
         /// <param name="e"></param>
 
-        private void save_DG(MyDataGrid dg)
-        {
-            ClientDataGrid.adapter.Update(ClientDataGrid.table);
-            dataGridViewClients.ReadOnly = true;
-            dataGridViewClients.AllowUserToAddRows = false;
-            button5.Enabled = false;
-            button_Client_new.Enabled = true;
-            button7.Enabled = true;
-        }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            ClientDataGrid.adapter.Update(ClientDataGrid.table);
-            dataGridViewClients.ReadOnly = true;
-            dataGridViewClients.AllowUserToAddRows = false;
-            button5.Enabled = false;
-            button_Client_new.Enabled = true;
-            button7.Enabled = true;
+            SaveDG(ClientDataGrid);
         }
 
         /// <summary>
-        /// new client button
+        /// new/edit client button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
 
         private void button6_Click(object sender, EventArgs e)
         {
-            dataGridViewClients.ReadOnly = false;
-            dataGridViewClients.AllowUserToAddRows = true;
-            button5.Enabled = true;
-            button_Client_new.Enabled = false;
-            button7.Enabled = false;
+            New_EditDG(ClientDataGrid);
         }
 
         /// <summary>
@@ -104,16 +133,12 @@ namespace WindowsFormsApplication1
 
         private void button7_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Do you want to delete this row ?", "Delete", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                dataGridViewClients.Rows.RemoveAt(dataGridViewClients.SelectedRows[0].Index);
-                ClientDataGrid.adapter.Update(ClientDataGrid.table);
-            }
+            DeleteDG(ClientDataGrid);
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
-            RefreshDG(ClientDataGrid,button5);
+            RefreshDG(ClientDataGrid);
         }
 
         /// <summary>
@@ -142,31 +167,17 @@ namespace WindowsFormsApplication1
 
         private void buttonSave_Goods_Click(object sender, EventArgs e)
         {
-            GoodsDataGrid.adapter.Update(GoodsDataGrid.table);
-            dataGridViewGoods.ReadOnly = true;
-            dataGridViewGoods.AllowUserToAddRows = false;
-            buttonSave_Goods.Enabled = false;
-            buttonNew_Goods.Enabled = true;
-            buttonDel_Goods.Enabled = true;
+            SaveDG(GoodsDataGrid); 
         }
 
         private void buttonDel_Goods_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Do you want to delete this row ?", "Delete", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                dataGridViewGoods.Rows.RemoveAt(dataGridViewGoods.SelectedRows[0].Index);
-                GoodsDataGrid.adapter.Update(GoodsDataGrid.table);
-            }
+            DeleteDG(GoodsDataGrid); 
         }
 
         private void buttonNew_Goods_Click(object sender, EventArgs e)
         {
-            dataGridViewGoods.AllowUserToAddRows = true;
-            dataGridViewGoods.ReadOnly = false;
-            buttonSave_Goods.Enabled = true;
-            buttonNew_Goods.Enabled = false;
-            buttonDel_Goods.Enabled = false;
-            
+            New_EditDG(GoodsDataGrid);            
         }
 
 
