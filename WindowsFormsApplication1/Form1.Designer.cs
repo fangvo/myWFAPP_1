@@ -43,17 +43,25 @@
             this.buttonSave_Goods = new System.Windows.Forms.Button();
             this.dataGridViewGoods = new System.Windows.Forms.DataGridView();
             this.buttonAdd_Goods = new System.Windows.Forms.Button();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.dataGridSells = new System.Windows.Forms.DataGridView();
+            this.buttonAdd_Sells = new System.Windows.Forms.Button();
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewClients)).BeginInit();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGoods)).BeginInit();
+            this.tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridSells)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl2
             // 
             this.tabControl2.Controls.Add(this.tabPage3);
             this.tabControl2.Controls.Add(this.tabPage4);
+            this.tabControl2.Controls.Add(this.tabPage5);
             this.tabControl2.Location = new System.Drawing.Point(13, 13);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
@@ -207,6 +215,56 @@
             this.buttonAdd_Goods.UseVisualStyleBackColor = true;
             this.buttonAdd_Goods.Click += new System.EventHandler(this.button4_Click);
             // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.buttonAdd_Sells);
+            this.tabPage5.Controls.Add(this.dataGridSells);
+            this.tabPage5.Controls.Add(this.comboBox3);
+            this.tabPage5.Controls.Add(this.comboBox1);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(1318, 414);
+            this.tabPage5.TabIndex = 2;
+            this.tabPage5.Text = "tabPage5";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Items.AddRange(new object[] {
+            "Покупка",
+            "Продажа"});
+            this.comboBox3.Location = new System.Drawing.Point(288, 12);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(121, 21);
+            this.comboBox3.TabIndex = 2;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(14, 12);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(268, 21);
+            this.comboBox1.TabIndex = 0;
+            // 
+            // dataGridSells
+            // 
+            this.dataGridSells.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridSells.Location = new System.Drawing.Point(14, 82);
+            this.dataGridSells.Name = "dataGridSells";
+            this.dataGridSells.Size = new System.Drawing.Size(817, 311);
+            this.dataGridSells.TabIndex = 4;
+            // 
+            // buttonAdd_Sells
+            // 
+            this.buttonAdd_Sells.Location = new System.Drawing.Point(415, 10);
+            this.buttonAdd_Sells.Name = "buttonAdd_Sells";
+            this.buttonAdd_Sells.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdd_Sells.TabIndex = 5;
+            this.buttonAdd_Sells.Text = "Добавить";
+            this.buttonAdd_Sells.UseVisualStyleBackColor = true;
+            this.buttonAdd_Sells.Click += new System.EventHandler(this.buttonAdd_Sells_Click);
+            // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(1344, 455);
@@ -217,6 +275,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewClients)).EndInit();
             this.tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGoods)).EndInit();
+            this.tabPage5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridSells)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -267,6 +327,11 @@
         private System.Windows.Forms.Button buttonDel_Goods;
         private System.Windows.Forms.Button buttonNew_Goods;
         private System.Windows.Forms.Button buttonSave_Goods;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.Button buttonAdd_Sells;
+        private System.Windows.Forms.DataGridView dataGridSells;
     }
 }
 

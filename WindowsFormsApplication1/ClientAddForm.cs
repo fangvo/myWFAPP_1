@@ -31,9 +31,10 @@ namespace WindowsFormsApplication1
             long rs = Int64.Parse(textBoxRS.Text);
             long ks = Int64.Parse(textBoxKS.Text);
             long bik = Int64.Parse(textBoxBIK.Text);
+            object[] obj = { client, adres, phone, inn, kpp, bank, rs, ks, bik };
             SqlConnection conn = new SqlConnection(@"Data Source=FANGVO-PC\SQLEXPRESS;Initial Catalog=MyDB;Integrated Security=True");
             SqlCommand cmd = conn.CreateCommand();
-           // cmd.CommandText = String.Format("INSERT INTO Clients VALUES ( '{0}', '{1}', '{2}', {3], {4}, '{5}', {6}, {7}, {8});", client, adres, phone, inn, kpp, bank, rs, ks, bik);
+            //cmd.CommandText = String.Format("INSERT INTO Clients VALUES ( '{0}', '{1}', '{2}', {3], {4}, '{5}', {6}, {7}, {8});", obj);
             cmd.CommandText = String.Format("INSERT INTO Clients VALUES ( '" + client + "', '" + adres + "', '" + phone + "', " + inn + ", " + kpp + ", '" + bank + "', " + rs + ", " + ks + ", " + bik + ");");
 
             conn.Open();
