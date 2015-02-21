@@ -44,10 +44,11 @@
             this.dataGridViewGoods = new System.Windows.Forms.DataGridView();
             this.buttonAdd_Goods = new System.Windows.Forms.Button();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.buttonAdd_Sells = new System.Windows.Forms.Button();
+            this.dataGridSells = new System.Windows.Forms.DataGridView();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.dataGridSells = new System.Windows.Forms.DataGridView();
-            this.buttonAdd_Sells = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewClients)).BeginInit();
@@ -217,6 +218,7 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.button4);
             this.tabPage5.Controls.Add(this.buttonAdd_Sells);
             this.tabPage5.Controls.Add(this.dataGridSells);
             this.tabPage5.Controls.Add(this.comboBox3);
@@ -227,6 +229,24 @@
             this.tabPage5.TabIndex = 2;
             this.tabPage5.Text = "tabPage5";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // buttonAdd_Sells
+            // 
+            this.buttonAdd_Sells.Location = new System.Drawing.Point(415, 10);
+            this.buttonAdd_Sells.Name = "buttonAdd_Sells";
+            this.buttonAdd_Sells.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdd_Sells.TabIndex = 5;
+            this.buttonAdd_Sells.Text = "Добавить";
+            this.buttonAdd_Sells.UseVisualStyleBackColor = true;
+            this.buttonAdd_Sells.Click += new System.EventHandler(this.buttonAdd_Sells_Click);
+            // 
+            // dataGridSells
+            // 
+            this.dataGridSells.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridSells.Location = new System.Drawing.Point(14, 82);
+            this.dataGridSells.Name = "dataGridSells";
+            this.dataGridSells.Size = new System.Drawing.Size(817, 311);
+            this.dataGridSells.TabIndex = 4;
             // 
             // comboBox3
             // 
@@ -247,23 +267,15 @@
             this.comboBox1.Size = new System.Drawing.Size(268, 21);
             this.comboBox1.TabIndex = 0;
             // 
-            // dataGridSells
+            // button4
             // 
-            this.dataGridSells.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridSells.Location = new System.Drawing.Point(14, 82);
-            this.dataGridSells.Name = "dataGridSells";
-            this.dataGridSells.Size = new System.Drawing.Size(817, 311);
-            this.dataGridSells.TabIndex = 4;
-            // 
-            // buttonAdd_Sells
-            // 
-            this.buttonAdd_Sells.Location = new System.Drawing.Point(415, 10);
-            this.buttonAdd_Sells.Name = "buttonAdd_Sells";
-            this.buttonAdd_Sells.Size = new System.Drawing.Size(75, 23);
-            this.buttonAdd_Sells.TabIndex = 5;
-            this.buttonAdd_Sells.Text = "Добавить";
-            this.buttonAdd_Sells.UseVisualStyleBackColor = true;
-            this.buttonAdd_Sells.Click += new System.EventHandler(this.buttonAdd_Sells_Click);
+            this.button4.Location = new System.Drawing.Point(14, 53);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 6;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click_1);
             // 
             // Form1
             // 
@@ -332,6 +344,7 @@
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Button buttonAdd_Sells;
         private System.Windows.Forms.DataGridView dataGridSells;
+        private System.Windows.Forms.Button button4;
     }
 }
 

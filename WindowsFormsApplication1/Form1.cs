@@ -16,7 +16,8 @@ namespace WindowsFormsApplication1
         SqlCommand sCommand;
         SqlCommandBuilder sBuilder;
         MyDataGrid clientDataGrid,goodsDataGrid,sellsDataGrid;
-        static public string connectionString = @"Data Source=FANGVO-PC\SQLEXPRESS;Initial Catalog=MyDB;Integrated Security=True";
+        //static public string connectionString = @"Data Source=FANGVO-PC\SQLEXPRESS;Initial Catalog=MyDB;Integrated Security=SSPI";
+        static public string connectionString = @"Data Source=192.168.10.3\SQLEXPRESS,1433; Initial Catalog=MyDB; User Id=fangvo;Password=84695237";
 
         public Form1()
         {
@@ -287,9 +288,18 @@ namespace WindowsFormsApplication1
                 id = (int)sdr["id"];
             }
             conn.Close();
-            SellsInfoForm sif = new SellsInfoForm(id);
+            SellsInfoForm sif = new SellsInfoForm(id,comboBox3.SelectedIndex);
             sif.ShowDialog();
         }
 
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            int id = (int)sellsDataGrid.dataGrid.SelectedRows[0].Cells["Id"].Value;
+            int index;
+            if (sellsDataGrid.dataGrid.SelectedRows[0].Cells["Type"].Value.ToString().Equals("Покупка")) { index = 0; } else { index = 1; }
+            SellsInfoForm sif = new SellsInfoForm(id,index);
+            sif.ShowDialog();
+        }
+        
     }
 }
