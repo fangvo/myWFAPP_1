@@ -9,29 +9,35 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace WindowsFormsApplication1
 {
     public partial class SellsInfoForm : Form
     {
 
         int id,index;
+        String name;
         MyDataGrid dataGrid = new MyDataGrid();
         int number;
+        DateTime date;
+        Boolean isFirst;
 
-        public SellsInfoForm(int _id,int _index)
+        public SellsInfoForm(String _name,DateTime _date,int _id,Boolean _bool)
         {
             InitializeComponent();
-            id = _id;
-            index = _index;
             dataGrid.dataGrid = dataGridView1;
             dataGrid.table_name = "SellInfo";
             number = 0;
-            refereshDG(dataGrid);
+            name = _name;
+            date = _date;
+            id = _id;
+            isFirst = _bool;
 
         }
 
         private void SellsInfoForm_Load(object sender, EventArgs e)
         {
+            refereshDG(dataGrid);
             Form1.BindDataCB(comboBox1, "Goods", "name");
         }
 
@@ -73,7 +79,21 @@ namespace WindowsFormsApplication1
             }
             SqlConnection conn = new SqlConnection(Form1.connectionString);
             SqlCommand cmd = conn.CreateCommand();
+            if (isFirst)
+            {
+                cmd.CommandText = "INSERT INTO Sells VALUES ( @name,@type,@date )";
+                SqlParameter sinceDateTimeParam = new SqlParameter("@date", SqlDbType.DateTime);
+                sinceDateTimeParam.Value = date;
+                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@type", "Продажа");
+                cmd.Parameters.Add(sinceDateTimeParam);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                isFirst = false;
+            }
             cmd.CommandText = "Select kolvo from Goods where name = @name";
+            cmd.Parameters.Clear();
             cmd.Parameters.AddWithValue("@name", name);
             SqlDataReader sdr = null;
             conn.Open();
@@ -130,6 +150,16 @@ namespace WindowsFormsApplication1
         {
             this.Close();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            //new OpenXml("temp.dotx", "new.docx").GenerateDocument();
+            //new ToWord().MakeWordDoc(name,date,id,dataGrid);
+            new NewWord("many many text", dataGrid).MakeWordDoc("\\temp.dotx");
+            //dataGrid.table.Rows[0];
+        }
+
+        
 
 
 

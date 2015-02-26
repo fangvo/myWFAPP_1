@@ -18,7 +18,7 @@ namespace WindowsFormsApplication1
         MyDataGrid clientDataGrid,goodsDataGrid,sellsDataGrid;
         //static public string connectionString = @"Data Source=FANGVO-PC\SQLEXPRESS;Initial Catalog=MyDB;Integrated Security=SSPI";
         static public string connectionString = @"Data Source=192.168.10.3\SQLEXPRESS,1433; Initial Catalog=MyDB; User Id=fangvo;Password=84695237";
-
+        public String compName = "Some Name";
         public Form1()
         {
             InitializeComponent();
@@ -266,39 +266,57 @@ namespace WindowsFormsApplication1
         private void buttonAdd_Sells_Click(object sender, EventArgs e)
         {
             String name = comboBox1.Text;
-            String type = comboBox3.Text;
             int id = 0;
             DateTime date = DateTime.Now;
-            SqlConnection conn = new SqlConnection(connectionString);
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                SqlCommand cmd = con.CreateCommand();
+                cmd.CommandText = String.Format("SELECT IDENT_CURRENT({0}) + IDENT_INCR({0})", "'Sells'");
+                SqlDataReader sdr = null;
+                sdr = cmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    object temp_id = sdr.GetValue(0);
+                    id = Convert.ToInt32(temp_id);
+                }
+            }
+            /*SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = conn.CreateCommand();
             cmd.CommandText = "INSERT INTO Sells VALUES ( @name,@type,@date )";
             SqlParameter sinceDateTimeParam = new SqlParameter("@date", SqlDbType.DateTime);
             sinceDateTimeParam.Value = date;
             cmd.Parameters.AddWithValue("@name", name);
             cmd.Parameters.AddWithValue("@type", type);
-            cmd.Parameters.Add(sinceDateTimeParam);
-            conn.Open();
-            cmd.ExecuteNonQuery();
-            RefreshDG(sellsDataGrid,false);
-            cmd.CommandText = "SELECT id FROM Sells WHERE ClientName like @name AND Type like @type AND  day like @date ";
-            SqlDataReader sdr = null;
-            sdr = cmd.ExecuteReader();
-            while (sdr.Read())
-            {
-                id = (int)sdr["id"];
-            }
-            conn.Close();
-            SellsInfoForm sif = new SellsInfoForm(id,comboBox3.SelectedIndex);
+            cmd.Parameters.Add(sinceDateTimeParam);*/
+            SellsInfoForm sif = new SellsInfoForm(name,date,id,true);
             sif.ShowDialog();
         }
 
         private void button4_Click_1(object sender, EventArgs e)
         {
-            int id = (int)sellsDataGrid.dataGrid.SelectedRows[0].Cells["Id"].Value;
+            int id = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                SqlCommand cmd = con.CreateCommand();
+                cmd.CommandText = String.Format("SELECT IDENT_CURRENT({0}) + IDENT_INCR({0})", "'Sells'");
+                SqlDataReader sdr = null;
+                sdr = cmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    object temp_id = sdr.GetValue(0);
+                    id = Convert.ToInt32(temp_id);
+                    MessageBox.Show(id.ToString(), "Error", MessageBoxButtons.OK);
+                }
+            }
+            
+
+            /*int id = (int)sellsDataGrid.dataGrid.SelectedRows[0].Cells["Id"].Value;
             int index;
             if (sellsDataGrid.dataGrid.SelectedRows[0].Cells["Type"].Value.ToString().Equals("Покупка")) { index = 0; } else { index = 1; }
             SellsInfoForm sif = new SellsInfoForm(id,index);
-            sif.ShowDialog();
+            sif.ShowDialog();*/
         }
         
     }
