@@ -48,6 +48,7 @@
             this.textBoxClientName = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label9
@@ -64,7 +65,7 @@
             this.textBoxKPP.Location = new System.Drawing.Point(64, 116);
             this.textBoxKPP.Name = "textBoxKPP";
             this.textBoxKPP.Size = new System.Drawing.Size(356, 20);
-            this.textBoxKPP.TabIndex = 34;
+            this.textBoxKPP.TabIndex = 5;
             // 
             // label7
             // 
@@ -80,7 +81,7 @@
             this.textBoxBIK.Location = new System.Drawing.Point(500, 90);
             this.textBoxBIK.Name = "textBoxBIK";
             this.textBoxBIK.Size = new System.Drawing.Size(356, 20);
-            this.textBoxBIK.TabIndex = 32;
+            this.textBoxBIK.TabIndex = 9;
             // 
             // label8
             // 
@@ -96,7 +97,7 @@
             this.textBoxINN.Location = new System.Drawing.Point(64, 90);
             this.textBoxINN.Name = "textBoxINN";
             this.textBoxINN.Size = new System.Drawing.Size(356, 20);
-            this.textBoxINN.TabIndex = 30;
+            this.textBoxINN.TabIndex = 4;
             // 
             // label6
             // 
@@ -112,7 +113,7 @@
             this.textBoxKS.Location = new System.Drawing.Point(500, 64);
             this.textBoxKS.Name = "textBoxKS";
             this.textBoxKS.Size = new System.Drawing.Size(356, 20);
-            this.textBoxKS.TabIndex = 28;
+            this.textBoxKS.TabIndex = 8;
             // 
             // label5
             // 
@@ -128,7 +129,7 @@
             this.textBoxBank.Location = new System.Drawing.Point(501, 12);
             this.textBoxBank.Name = "textBoxBank";
             this.textBoxBank.Size = new System.Drawing.Size(356, 20);
-            this.textBoxBank.TabIndex = 26;
+            this.textBoxBank.TabIndex = 6;
             // 
             // label4
             // 
@@ -144,7 +145,7 @@
             this.textBoxRS.Location = new System.Drawing.Point(500, 38);
             this.textBoxRS.Name = "textBoxRS";
             this.textBoxRS.Size = new System.Drawing.Size(356, 20);
-            this.textBoxRS.TabIndex = 24;
+            this.textBoxRS.TabIndex = 7;
             // 
             // label3
             // 
@@ -160,7 +161,7 @@
             this.textBoxTel.Location = new System.Drawing.Point(64, 64);
             this.textBoxTel.Name = "textBoxTel";
             this.textBoxTel.Size = new System.Drawing.Size(356, 20);
-            this.textBoxTel.TabIndex = 22;
+            this.textBoxTel.TabIndex = 3;
             // 
             // label2
             // 
@@ -177,7 +178,7 @@
             this.textBoxAdres.Multiline = true;
             this.textBoxAdres.Name = "textBoxAdres";
             this.textBoxAdres.Size = new System.Drawing.Size(356, 20);
-            this.textBoxAdres.TabIndex = 20;
+            this.textBoxAdres.TabIndex = 2;
             // 
             // label1
             // 
@@ -193,7 +194,8 @@
             this.textBoxClientName.Location = new System.Drawing.Point(64, 12);
             this.textBoxClientName.Name = "textBoxClientName";
             this.textBoxClientName.Size = new System.Drawing.Size(356, 20);
-            this.textBoxClientName.TabIndex = 18;
+            this.textBoxClientName.TabIndex = 1;
+            this.textBoxClientName.Tag = "Клиент";
             // 
             // button1
             // 
@@ -214,11 +216,24 @@
             this.button2.Text = "Отмена";
             this.button2.UseVisualStyleBackColor = true;
             // 
+            // comboBox2
+            // 
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "Покупатель",
+            "Постовщик"});
+            this.comboBox2.Location = new System.Drawing.Point(64, 142);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(121, 21);
+            this.comboBox2.TabIndex = 38;
+            // 
             // ClientAddForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(868, 144);
+            this.ClientSize = new System.Drawing.Size(868, 180);
+            this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label9);
@@ -268,5 +283,6 @@
         private System.Windows.Forms.TextBox textBoxClientName;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ComboBox comboBox2;
     }
 }

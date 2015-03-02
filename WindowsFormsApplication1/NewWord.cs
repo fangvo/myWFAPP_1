@@ -23,7 +23,7 @@ namespace WindowsFormsApplication1
 
         public void MakeWordDoc(String template)
         {
-            Word._Document oDoc = GetDoc(Environment.CurrentDirectory + template);
+            Word._Document oDoc = GetDoc(Environment.CurrentDirectory + "\\Template" + template);
             oWord.Visible = true;
             //oDoc.SaveAs(FileName: Environment.CurrentDirectory + "\\New.docx");
             //oDoc.Close(); 

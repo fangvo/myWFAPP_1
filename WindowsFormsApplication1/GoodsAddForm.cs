@@ -18,6 +18,8 @@ namespace WindowsFormsApplication1
             InitializeComponent();
         }
 
+
+
         private void button1_Click(object sender, EventArgs e)
         {
             String name = textBoxTName.Text;
@@ -28,7 +30,7 @@ namespace WindowsFormsApplication1
             String ed = textBoxED.Text;
             SqlConnection conn = new SqlConnection(@"Data Source=FANGVO-PC\SQLEXPRESS;Initial Catalog=MyDB;Integrated Security=True");
             SqlCommand cmd = conn.CreateCommand();
-            cmd.CommandText = @"INSERT INTO Tovars VALUES ( '" + name + "', " + cena + ", " + kolvo + ", " + articyl + ", " + cod + ", '" + ed + "' );";
+            cmd.CommandText = @"INSERT INTO Goods VALUES ( '" + name + "', " + cena + ", " + kolvo + ", " + articyl + ", " + cod + ", '" + ed + "' );";
             conn.Open();
             cmd.ExecuteNonQuery();
             conn.Close();

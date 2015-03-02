@@ -8,6 +8,7 @@ namespace WindowsFormsApplication1
 {
     static class Program
     {
+        public static Form1 f;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -16,7 +17,8 @@ namespace WindowsFormsApplication1
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            f = new Form1();
+            Application.Run(f);
         }
     }
 }
