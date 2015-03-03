@@ -16,8 +16,8 @@ namespace WindowsFormsApplication1
         public DataTable table { get; set; }
         public DataSet ds { get; set; }
         public String table_name { get; set; }
-        public Button b_save { get; set; }
-        public Button b_new_edit { get; set; }
-        public Button b_delete { get; set; }
+        //public Button b_save { get; set; }
+        //public Button b_new_edit { get; set; }
+        //public Button b_delete { get; set; }
     }
 }

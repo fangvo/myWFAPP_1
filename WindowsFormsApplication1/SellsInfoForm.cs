@@ -57,6 +57,9 @@ namespace WindowsFormsApplication1
                     number = Convert.ToInt32(temp_id);
                 }
             }
+
+            SumMethod(dataGrid, false);
+
             }
         }
 
@@ -80,21 +83,43 @@ namespace WindowsFormsApplication1
             dg.dataGrid.AllowUserToAddRows = false;
             dg.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dg.dataGrid.Refresh();
+            }
 
+            
+        }
 
-            connection.Open();
-            cmd.CommandText = String.Format("SELECT SUM(chena) as summ from {0} WHERE idofsell = @id", dg.table_name);
-            SqlDataReader sdr = null;
-            sdr = cmd.ExecuteReader();
-            while (sdr.Read())
+        private void SumMethod(MyDataGrid dg,bool update)
+        {
+            using (SqlConnection connection = new SqlConnection(Form1.connectionString))
             {
-                string sumtext =  sdr.GetValue(0).ToString();
-                label3.Text = sumtext;
-            }
-            sdr.Close();
-            }
+                SqlCommand cmd = connection.CreateCommand();
+                connection.Open();
+                cmd.CommandText = String.Format("SELECT SUM(chena) as summ from {0} WHERE idofsell = @id", dg.table_name);
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", id);
+                SqlDataReader sdr = null;
+                sdr = cmd.ExecuteReader();
+                object sumtext = 0;
+                while (sdr.Read())
+                {
+                    sumtext =  sdr.GetValue(0);
+                    
+                }
+                sdr.Close();
+                connection.Close();
 
-
+                label3.Text = sumtext.ToString();
+                if (update)
+                {
+                    cmd.CommandText = "update SELLS set SUM = @sum where ID = @id";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@SUM", (decimal)sumtext);
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -110,21 +135,6 @@ namespace WindowsFormsApplication1
             }
             SqlConnection conn = new SqlConnection(Form1.connectionString);
             SqlCommand cmd = conn.CreateCommand();
-            if (isFirst)
-            {
-                cmd.CommandText = "INSERT INTO Sells VALUES ( @name,@type,@date )";
-                cmd.Parameters.Clear();
-                SqlParameter sinceDateTimeParam = new SqlParameter("@date", SqlDbType.DateTime);
-                sinceDateTimeParam.Value = date;
-                cmd.Parameters.AddWithValue("@name", name);
-                cmd.Parameters.AddWithValue("@type", type);
-                cmd.Parameters.Add(sinceDateTimeParam);
-                conn.Open();
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                isFirst = false;
-                ;
-            }
             cmd.CommandText = "Select kolvo,chena from Goods where name = @name";
             cmd.Parameters.Clear();
             cmd.Parameters.AddWithValue("@name", name_goods);
@@ -166,6 +176,24 @@ namespace WindowsFormsApplication1
             conn.Open();
             cmd.ExecuteNonQuery();
             conn.Close();
+
+            if (isFirst)
+            {
+                decimal sum = ed*chena;
+                cmd.CommandText = "INSERT INTO Sells VALUES ( @name,@type,@date,@sum )";
+                cmd.Parameters.Clear();
+                SqlParameter sinceDateTimeParam = new SqlParameter("@date", SqlDbType.DateTime);
+                sinceDateTimeParam.Value = date;
+                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@type", type);
+                cmd.Parameters.AddWithValue("@sum", sum);
+                cmd.Parameters.Add(sinceDateTimeParam);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                isFirst = false;
+                ;
+            }
 
             conn.Open();
             bool Update = true;
@@ -230,12 +258,7 @@ namespace WindowsFormsApplication1
             }
 
             refereshDG(dataGrid);
-
-            
-            
-            
-
-
+            SumMethod(dataGrid,true);
         }
 
         private void button2_Click(object sender, EventArgs e)

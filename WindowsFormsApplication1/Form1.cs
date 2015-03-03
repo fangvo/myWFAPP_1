@@ -17,7 +17,7 @@ namespace WindowsFormsApplication1
     public partial class Form1 : Form
     {
         SqlCommand sCommand;
-        MyDataGrid clientDataGrid,goodsDataGrid,sellsDataGrid;
+        MyDataGrid clientDataGrid,goodsDataGrid,sellsDataGrid,impDataGrid;
         //static public string connectionString = @"Data Source=FANGVO-PC\SQLEXPRESS;Initial Catalog=MyDB;User Id=fangvo;Password=84695237"";
         static public string connectionString = "";
         public String compName = "Some Name";
@@ -32,6 +32,7 @@ namespace WindowsFormsApplication1
             clientDataGrid = new MyDataGrid();
             goodsDataGrid = new MyDataGrid();
             sellsDataGrid = new MyDataGrid();
+            impDataGrid = new MyDataGrid();
             SQlLogin fsqll = new SQlLogin();
             fsqll.ShowDialog();
             this.Load +=Form1_Load;
@@ -59,10 +60,17 @@ namespace WindowsFormsApplication1
             sellsDataGrid.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             sellsDataGrid.table_name = "Sells";
 
+            impDataGrid.dataGrid = dataGridImp;
+            impDataGrid.dataGrid.AllowUserToAddRows = false;
+            impDataGrid.dataGrid.ReadOnly = true;
+            impDataGrid.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            impDataGrid.table_name = "Imp";
+
 
             RefreshDGV(null, clientDataGrid, comboBox2.SelectedItem.ToString());
             RefreshDGV(null, goodsDataGrid, null);
             RefreshDGV(null, sellsDataGrid, null);
+            RefreshDGV(null, impDataGrid, null);
 
             comboBox3.SelectedIndex = 1;
 
@@ -94,6 +102,27 @@ namespace WindowsFormsApplication1
             filterFClients.Visible = true;
         }
 
+        private void TabIndexChanced(object sender, EventArgs e)
+        {
+            TabControl tc = (TabControl)sender;
+            string s = tc.SelectedTab.Text;
+            switch (s)
+            {
+                case "Клиенты":
+                    RefreshDGV(null, clientDataGrid, comboBox2.SelectedItem.ToString());
+                    break;
+                case "Товары":
+                    RefreshDGV(null, goodsDataGrid, null);
+                    break;
+                case "Сделки":
+                    RefreshDGV(null, sellsDataGrid, null);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
 
         private List<String> GetHeaders(DataGridView dgv)
         {
@@ -112,8 +141,7 @@ namespace WindowsFormsApplication1
             RefreshDGV(filterFClients.filterList, clientDataGrid, comboBox2.SelectedItem.ToString());
         }
 
-
-
+        /*
         void comboBox1_TextChanged(object sender, EventArgs e)
         {
             try
@@ -144,6 +172,7 @@ namespace WindowsFormsApplication1
             {
             }
         }
+        */
 
         public static void BindDataCB(ComboBox cb, String table_name,String colom_name)
         {
@@ -169,7 +198,7 @@ namespace WindowsFormsApplication1
             }
 
 
-
+        /*
         public void RefreshDG(MyDataGrid dg,Boolean but)
         {
             string sql = "SELECT * FROM " + dg.table_name;
@@ -189,7 +218,7 @@ namespace WindowsFormsApplication1
             dg.dataGrid.ReadOnly = true;
             dg.dataGrid.AllowUserToAddRows = false;
             dg.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        }
+        }*/
 
         private static string getOper(Filters.FiltersValls filter_item)
         {
@@ -232,8 +261,6 @@ namespace WindowsFormsApplication1
 
             return filter_string;
         }
-
-
 
         public static void RefreshDGV(List<Filters.FiltersValls> filter, MyDataGrid dg,String type)
         {
@@ -298,11 +325,12 @@ namespace WindowsFormsApplication1
         }
 
 
+        /*
         /// <summary>
         /// Сохранить измененые даные из датагрид в бд
         /// </summary>
         /// <param name="dg"></param>
-
+        
         private void SaveDG(MyDataGrid dg)
         {
             dg.adapter.Update(dg.table);
@@ -312,7 +340,7 @@ namespace WindowsFormsApplication1
             dg.b_new_edit.Enabled = true;
             dg.b_delete.Enabled = true;
         }
-
+        
         public void updateRow(MyDataGrid dg)
         {
             Dictionary<String, Object> dict = new Dictionary<string,object>();
@@ -330,7 +358,7 @@ namespace WindowsFormsApplication1
         /// Включить режим редактирования датагрида
         /// </summary>
         /// <param name="dg"></param>
-
+        
         private void New_EditDG(MyDataGrid dg)
         {
             dg.dataGrid.ReadOnly = false;
@@ -339,6 +367,8 @@ namespace WindowsFormsApplication1
             dg.b_new_edit.Enabled = false;
             dg.b_delete.Enabled = false;
         }
+        */
+
 
         /// <summary>
         /// Удалить выбраную строку
@@ -352,40 +382,6 @@ namespace WindowsFormsApplication1
                 dg.dataGrid.Rows.RemoveAt(dg.dataGrid.SelectedRows[0].Index);
                 dg.adapter.Update(dg.table);
             }
-        }
-
-        /// <summary>
-        /// save clirnt button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            SaveDG(clientDataGrid);
-        }
-
-        /// <summary>
-        /// new/edit client button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            New_EditDG(clientDataGrid);
-        }
-
-        /// <summary>
-        /// dellete button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            DeleteDG(clientDataGrid);
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -415,21 +411,6 @@ namespace WindowsFormsApplication1
         {
             Form goodsAddForm = new GoodsAddForm();
             goodsAddForm.ShowDialog();
-        }
-
-        private void buttonSave_Goods_Click(object sender, EventArgs e)
-        {
-            SaveDG(goodsDataGrid); 
-        }
-
-        private void buttonDel_Goods_Click(object sender, EventArgs e)
-        {
-            DeleteDG(goodsDataGrid); 
-        }
-
-        private void buttonNew_Goods_Click(object sender, EventArgs e)
-        {
-            New_EditDG(goodsDataGrid);            
         }
 
 
@@ -489,30 +470,25 @@ namespace WindowsFormsApplication1
             sif.ShowDialog();
         }
 
-        private void dataGridViewGoods_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void buttonOtchet_Click(object sender, EventArgs e)
         {
+            Form otchet = new OtchetDatePicker();
+            otchet.ShowDialog();
 
         }
 
-        private void TabIndexChanced(object sender, EventArgs e)
+        
+        //////////////////////////////////////////////////Tab Imp///////////////////////////////////////////////////
+
+
+        private void buttonImpAdd_Click(object sender, EventArgs e)
         {
-            TabControl tc = (TabControl)sender;
-            string s = tc.SelectedTab.Text;
-            switch (s)
-            {
-                case "Клиенты":
-                    RefreshDGV(null, clientDataGrid, comboBox2.SelectedItem.ToString());
-                    break;
-                case "Товары":
-                    RefreshDGV(null, goodsDataGrid, null);
-                    break;
-                case "Сделки":
-                    RefreshDGV(null, sellsDataGrid, null);
-                    break;
-                default:
-                    break;
-            }
+            Form impAddForm = new ImpAddForm();
+            impAddForm.ShowDialog();
+            RefreshDGV(null, impDataGrid, null);
         }
+
+
 
         
     }

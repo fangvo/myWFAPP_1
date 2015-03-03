@@ -48,6 +48,9 @@
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.dataGridImp = new System.Windows.Forms.DataGridView();
+            this.buttonImpAdd = new System.Windows.Forms.Button();
+            this.buttonOtchet = new System.Windows.Forms.Button();
             this.tabHost.SuspendLayout();
             this.tabPageClients.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewClients)).BeginInit();
@@ -55,6 +58,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGoods)).BeginInit();
             this.tabPageSells.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridSells)).BeginInit();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridImp)).BeginInit();
             this.SuspendLayout();
             // 
             // tabHost
@@ -115,9 +120,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewClients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewClients.Location = new System.Drawing.Point(3, 71);
+            this.dataGridViewClients.Location = new System.Drawing.Point(3, 70);
             this.dataGridViewClients.Name = "dataGridViewClients";
-            this.dataGridViewClients.Size = new System.Drawing.Size(758, 439);
+            this.dataGridViewClients.Size = new System.Drawing.Size(760, 440);
             this.dataGridViewClients.TabIndex = 10;
             // 
             // button8
@@ -134,9 +139,9 @@
             // 
             this.button2.Location = new System.Drawing.Point(25, 7);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(63, 22);
+            this.button2.Size = new System.Drawing.Size(75, 22);
             this.button2.TabIndex = 4;
-            this.button2.Text = "button2";
+            this.button2.Text = "Добавить";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
@@ -178,11 +183,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewGoods.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewGoods.Location = new System.Drawing.Point(3, 36);
+            this.dataGridViewGoods.Location = new System.Drawing.Point(3, 35);
             this.dataGridViewGoods.Name = "dataGridViewGoods";
-            this.dataGridViewGoods.Size = new System.Drawing.Size(758, 474);
+            this.dataGridViewGoods.Size = new System.Drawing.Size(760, 475);
             this.dataGridViewGoods.TabIndex = 1;
-            this.dataGridViewGoods.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewGoods_CellContentClick);
             // 
             // buttonAdd_Goods
             // 
@@ -190,12 +194,13 @@
             this.buttonAdd_Goods.Name = "buttonAdd_Goods";
             this.buttonAdd_Goods.Size = new System.Drawing.Size(75, 23);
             this.buttonAdd_Goods.TabIndex = 0;
-            this.buttonAdd_Goods.Text = "button4";
+            this.buttonAdd_Goods.Text = "Добавить";
             this.buttonAdd_Goods.UseVisualStyleBackColor = true;
             this.buttonAdd_Goods.Click += new System.EventHandler(this.button4_Click);
             // 
             // tabPageSells
             // 
+            this.tabPageSells.Controls.Add(this.buttonOtchet);
             this.tabPageSells.Controls.Add(this.buttonSellsFilter);
             this.tabPageSells.Controls.Add(this.button4);
             this.tabPageSells.Controls.Add(this.buttonAdd_Sells);
@@ -211,7 +216,7 @@
             // 
             // buttonSellsFilter
             // 
-            this.buttonSellsFilter.Location = new System.Drawing.Point(133, 53);
+            this.buttonSellsFilter.Location = new System.Drawing.Point(134, 46);
             this.buttonSellsFilter.Name = "buttonSellsFilter";
             this.buttonSellsFilter.Size = new System.Drawing.Size(75, 23);
             this.buttonSellsFilter.TabIndex = 7;
@@ -220,11 +225,11 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(14, 53);
+            this.button4.Location = new System.Drawing.Point(14, 46);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 6;
-            this.button4.Text = "button4";
+            this.button4.Text = "Посмотреть";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click_1);
             // 
@@ -241,9 +246,9 @@
             // dataGridSells
             // 
             this.dataGridSells.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridSells.Location = new System.Drawing.Point(3, 82);
+            this.dataGridSells.Location = new System.Drawing.Point(3, 75);
             this.dataGridSells.Name = "dataGridSells";
-            this.dataGridSells.Size = new System.Drawing.Size(758, 431);
+            this.dataGridSells.Size = new System.Drawing.Size(760, 435);
             this.dataGridSells.TabIndex = 4;
             // 
             // comboBox3
@@ -267,12 +272,42 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.buttonImpAdd);
+            this.tabPage3.Controls.Add(this.dataGridImp);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(767, 516);
             this.tabPage3.TabIndex = 3;
             this.tabPage3.Text = "Сотрудники";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // dataGridImp
+            // 
+            this.dataGridImp.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridImp.Location = new System.Drawing.Point(3, 70);
+            this.dataGridImp.Name = "dataGridImp";
+            this.dataGridImp.Size = new System.Drawing.Size(760, 440);
+            this.dataGridImp.TabIndex = 0;
+            // 
+            // buttonImpAdd
+            // 
+            this.buttonImpAdd.Location = new System.Drawing.Point(5, 3);
+            this.buttonImpAdd.Name = "buttonImpAdd";
+            this.buttonImpAdd.Size = new System.Drawing.Size(75, 23);
+            this.buttonImpAdd.TabIndex = 1;
+            this.buttonImpAdd.Text = "Добавить";
+            this.buttonImpAdd.UseVisualStyleBackColor = true;
+            this.buttonImpAdd.Click += new System.EventHandler(this.buttonImpAdd_Click);
+            // 
+            // buttonOtchet
+            // 
+            this.buttonOtchet.Location = new System.Drawing.Point(688, 46);
+            this.buttonOtchet.Name = "buttonOtchet";
+            this.buttonOtchet.Size = new System.Drawing.Size(75, 23);
+            this.buttonOtchet.TabIndex = 8;
+            this.buttonOtchet.Text = "Отчеты";
+            this.buttonOtchet.UseVisualStyleBackColor = true;
+            this.buttonOtchet.Click += new System.EventHandler(this.buttonOtchet_Click);
             // 
             // Form1
             // 
@@ -286,6 +321,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGoods)).EndInit();
             this.tabPageSells.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridSells)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridImp)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -328,6 +365,9 @@
         private System.Windows.Forms.Button buttonGoodsFilters;
         private System.Windows.Forms.Button buttonSellsFilter;
         private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Button buttonImpAdd;
+        private System.Windows.Forms.DataGridView dataGridImp;
+        private System.Windows.Forms.Button buttonOtchet;
     }
 }
 
