@@ -33,6 +33,9 @@ namespace WindowsFormsApplication1
             date = _date;
             id = _id;
             isFirst = _bool;
+            dataGridView1.ReadOnly = true;
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
         }
 
@@ -42,113 +45,72 @@ namespace WindowsFormsApplication1
             Form1.BindDataCB(comboBox1, "Goods", "name");
             if (!isFirst)
             {
-            DateTime date = DateTime.Now;
-            using (SqlConnection con = new SqlConnection(Form1.connectionString))
-            {
-                con.Open();
-                SqlCommand cmd = con.CreateCommand();
-                cmd.CommandText = "select max(num) as max from SellInfo where idofsell = @id";
-                cmd.Parameters.AddWithValue("@id", id);
-                SqlDataReader sdr = null;
-                sdr = cmd.ExecuteReader();
-                while (sdr.Read())
+                Dictionary<string, object> d = new Dictionary<string, object>();
+                string cmdtext = "select max(num) as max from SellInfo where idofsell = @id";
+                d.Add("@id", id);
+                using (DataTable dt = Form1.SQLQuery(cmdtext, d))
                 {
-                    object temp_id = sdr.GetValue(0);
+
+                    object temp_id = dt.Rows[0].ItemArray[0];
                     number = Convert.ToInt32(temp_id);
                 }
-            }
-
-            SumMethod(dataGrid, false);
+                SumMethod(dataGrid, false);
 
             }
         }
 
         private void refereshDG(MyDataGrid dg)
         {
-            using (SqlConnection connection = new SqlConnection(Form1.connectionString))
-            {
-            SqlCommand cmd = connection.CreateCommand();
-            cmd.CommandText = string.Format("SELECT sellinfo.num AS [№],sellinfo.name,sellinfo.ed as [колво],Goods.ed,sellinfo.chena as [Цена] ,Goods.articyl,Goods.cod FROM {0} sellinfo inner join Goods on sellinfo.name = Goods.name  WHERE idofsell = @id ORDER BY sellinfo.num", dg.table_name);
-            cmd.Parameters.AddWithValue("@id", id);
-            connection.Open();
-            dg.adapter = new SqlDataAdapter(cmd);
-            dg.ds = new DataSet();
-            dg.adapter.Fill(dg.ds, dg.table_name);
-            dg.table = dg.ds.Tables[dg.table_name];
-            connection.Close();
-            dg.dataGrid.DataSource = dg.ds.Tables[dg.table_name];
-
-            connection.Close();
-            dg.dataGrid.ReadOnly = true;
-            dg.dataGrid.AllowUserToAddRows = false;
-            dg.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dg.dataGrid.Refresh();
-            }
-
-            
+            Dictionary<string,object> d = new Dictionary<string,object>();
+            string cmd = string.Format("SELECT sellinfo.num AS [№],sellinfo.name,sellinfo.ed as [колво],Goods.ed,sellinfo.chena as [Цена] ,Goods.articyl,Goods.cod FROM {0} sellinfo inner join Goods on sellinfo.name = Goods.name  WHERE idofsell = @id ORDER BY sellinfo.num", dg.table_name);
+            d.Add("@id", id);
+            DataTable dt = Form1.SQLQuery(cmd, d);
+            dg.dataGrid.DataSource = dt;          
         }
 
         private void SumMethod(MyDataGrid dg,bool update)
         {
-            using (SqlConnection connection = new SqlConnection(Form1.connectionString))
-            {
-                SqlCommand cmd = connection.CreateCommand();
-                connection.Open();
-                cmd.CommandText = String.Format("SELECT SUM(chena) as summ from {0} WHERE idofsell = @id", dg.table_name);
-                cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@id", id);
-                SqlDataReader sdr = null;
-                sdr = cmd.ExecuteReader();
-                object sumtext = 0;
-                while (sdr.Read())
-                {
-                    sumtext =  sdr.GetValue(0);
-                    
-                }
-                sdr.Close();
-                connection.Close();
 
-                label3.Text = sumtext.ToString();
+                Dictionary<string, object> d = new Dictionary<string, object>();
+                Dictionary<string, object> d2 = new Dictionary<string, object>();
+
+                string cmdtext = String.Format("SELECT SUM(chena) as summ from {0} WHERE idofsell = @id", dg.table_name);
+                d.Add("@id", id);
+                DataTable dt = Form1.SQLQuery(cmdtext, d);
+                object o = dt.Rows[0].ItemArray[0];
+
+                label3.Text = o.ToString();
                 if (update)
                 {
-                    cmd.CommandText = "update SELLS set SUM = @sum where ID = @id";
-                    cmd.Parameters.Clear();
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.Parameters.AddWithValue("@SUM", (decimal)sumtext);
-                    connection.Open();
-                    cmd.ExecuteNonQuery();
-                    connection.Close();
+                    String text = "update SELLS set SUM = @sum where ID = @id";
+                    d2.Add("@id", id);
+                    d2.Add("@SUM", o);
+                    Form1.SQLExecuteNonQuery(text, d2);
                 }
-            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             String name_goods = comboBox1.Text;
+            Dictionary<string, object> d = new Dictionary<string, object>();
+            string cmdtext;
             int ed;
             int kolvo = 0;
             decimal chena = 0;
+
+
             if (!int.TryParse(textBox1.Text, out ed))
             {
                 MessageBox.Show("Введие цифры", "Error", MessageBoxButtons.OK);
                 return;
             }
-            SqlConnection conn = new SqlConnection(Form1.connectionString);
-            SqlCommand cmd = conn.CreateCommand();
-            cmd.CommandText = "Select kolvo,chena from Goods where name = @name";
-            cmd.Parameters.Clear();
-            cmd.Parameters.AddWithValue("@name", name_goods);
-            SqlDataReader sdr = null;
-            conn.Open();
-            sdr = cmd.ExecuteReader();
-            while (sdr.Read())
+            cmdtext = "Select kolvo,chena from Goods where name = @name";
+            d.Add("@name", name_goods);
+            using (DataTable dt = Form1.SQLQuery(cmdtext, d))
             {
-                kolvo = (int)sdr["kolvo"];
-                chena = (decimal)sdr["chena"];
-
+                kolvo = (int)dt.Rows[0].ItemArray[0];
+                chena = (decimal)dt.Rows[0].ItemArray[1];
             }
-
-            conn.Close();
 
             if (kolvo == 0 && type.Equals("Продажа"))
             {
@@ -169,91 +131,76 @@ namespace WindowsFormsApplication1
             {
                 kolvo += ed;
             }
-            cmd.CommandText = "update Goods set kolvo = @kolvo where name = @name";
-            cmd.Parameters.Clear();
-            cmd.Parameters.AddWithValue("@kolvo", kolvo);
-            cmd.Parameters.AddWithValue("@name", name_goods);
-            conn.Open();
-            cmd.ExecuteNonQuery();
-            conn.Close();
+            cmdtext = "update Goods set kolvo = @kolvo where name = @name";
+            d.Clear();
+            d.Add("@kolvo", kolvo);
+            d.Add("@name", name_goods);
+            Form1.SQLExecuteNonQuery(cmdtext, d);
+
 
             if (isFirst)
             {
                 decimal sum = ed*chena;
-                cmd.CommandText = "INSERT INTO Sells VALUES ( @name,@type,@date,@sum )";
-                cmd.Parameters.Clear();
-                SqlParameter sinceDateTimeParam = new SqlParameter("@date", SqlDbType.DateTime);
-                sinceDateTimeParam.Value = date;
-                cmd.Parameters.AddWithValue("@name", name);
-                cmd.Parameters.AddWithValue("@type", type);
-                cmd.Parameters.AddWithValue("@sum", sum);
-                cmd.Parameters.Add(sinceDateTimeParam);
-                conn.Open();
-                cmd.ExecuteNonQuery();
-                conn.Close();
+                cmdtext = "INSERT INTO Sells VALUES ( @name,@type,@date,@sum )";
+                d.Clear();
+                d.Add("@name", name);
+                d.Add("@type", type);
+                d.Add("@sum", sum);
+                d.Add("@date", date.Date.ToShortDateString());
+                Form1.SQLExecuteNonQuery(cmdtext, d);
                 isFirst = false;
                 ;
             }
 
-            conn.Open();
             bool Update = true;
-            cmd.CommandText = "SELECT COUNT(*) AS RowCnt FROM SellInfo WHERE name = @name and idofsell = @id";
-            cmd.Parameters.Clear();
-            cmd.Parameters.AddWithValue("@name", name_goods);
-            cmd.Parameters.AddWithValue("@id", id);
-            sdr = cmd.ExecuteReader();
-            while (sdr.Read())
+            cmdtext = "SELECT COUNT(*) AS RowCnt FROM SellInfo WHERE name = @name and idofsell = @id";
+            d.Clear();
+            d.Add("@name", name_goods);
+            d.Add("@id", id);
+            using (DataTable dt = Form1.SQLQuery(cmdtext, d))
             {
-                object temp_id = sdr.GetValue(0);
+
+                object temp_id = dt.Rows[0].ItemArray[0];
                 int temp = Convert.ToInt32(temp_id);
                 if (temp == 0)
                 {
                     Update = false;
                 }
             }
-            sdr.Close();
-            conn.Close();
 
             if (Update)
             {
                 int newed = ed;
-                cmd.CommandText = "SELECT ed FROM SellInfo WHERE name = @name and idofsell = @id";
-                cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@name", name_goods);
-                cmd.Parameters.AddWithValue("@id", id);
-                conn.Open();
-                sdr = cmd.ExecuteReader();
-                while (sdr.Read())
-                {
-                    object temp_id = sdr.GetValue(0);
-                    newed += Convert.ToInt32(temp_id);
-                }
-                sdr.Close();
-                conn.Close();
+                cmdtext = "SELECT ed FROM SellInfo WHERE name = @name and idofsell = @id";
+                d.Clear();
+                d.Add("@name", name_goods);
+                d.Add("@id", id);
+                using (DataTable dt = Form1.SQLQuery(cmdtext, d))
+            {
 
-                cmd.CommandText = "update SellInfo set ed = @kolvo, chena = @chena where name = @name and idofsell = @id";
-                cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@kolvo", newed);
-                cmd.Parameters.AddWithValue("@name", name_goods);
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.Parameters.AddWithValue("@chena", chena * newed);
-                conn.Open();
-                cmd.ExecuteNonQuery();
-                conn.Close();
+                object temp_id = dt.Rows[0].ItemArray[0];
+                newed += Convert.ToInt32(temp_id);
+            }
+                cmdtext = "update SellInfo set ed = @kolvo, chena = @chena where name = @name and idofsell = @id";
+                d.Clear();
+                d.Add("@kolvo", newed);
+                d.Add("@name", name_goods);
+                d.Add("@id", id);
+                d.Add("@chena", chena * newed);
+                Form1.SQLExecuteNonQuery(cmdtext, d);
+
             }
             else
             {
                 number++;
-                cmd.CommandText = "INSERT INTO SellInfo VALUES ( @num, @name, @ed, @id,@chena )";
-                cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@num", number);
-                cmd.Parameters.AddWithValue("@name", name_goods);
-                cmd.Parameters.AddWithValue("@ed", ed);
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.Parameters.AddWithValue("@chena", chena*ed);
-                conn.Open();
-                cmd.ExecuteNonQuery();
-                conn.Close();
+                cmdtext = "INSERT INTO SellInfo VALUES ( @num, @name, @ed, @id,@chena )";
+                d.Clear();
+                d.Add("@num", number);
+                d.Add("@name", name_goods);
+                d.Add("@ed", ed);
+                d.Add("@id", id);
+                d.Add("@chena", chena*ed);
+                Form1.SQLExecuteNonQuery(cmdtext, d);
                 
             }
 
@@ -268,10 +215,7 @@ namespace WindowsFormsApplication1
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //new OpenXml("temp.dotx", "new.docx").GenerateDocument();
-            //new ToWord().MakeWordDoc(name,date,id,dataGrid);
             new NewWord("many many text", dataGrid).MakeWordDoc("\\temp.dotx");
-            //dataGrid.table.Rows[0];
         }
 
         

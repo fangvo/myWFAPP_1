@@ -87,6 +87,65 @@ namespace WindowsFormsApplication1
             filterFSells = new Filters(GetHeaders(dataGridSells), sellsDataGrid, null);
         }
 
+        public static void SQLExecuteNonQuery(string command, Dictionary<string, object> sqlparam)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (SqlCommand cmd = connection.CreateCommand())
+                    {
+                        cmd.CommandText = command;
+                        if (sqlparam != null)
+                        {
+                            foreach (KeyValuePair<string, object> item in sqlparam)
+                            {
+                                cmd.Parameters.AddWithValue(item.Key, item.Value);
+                            }
+                        }
+                        cmd.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                }catch (SqlException)
+                    {
+                        MessageBox.Show("Error to Connect to SQL Serever", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+            }
+        }
+
+        public static DataTable SQLQuery(string command, Dictionary<string, object> sqlparam)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (SqlCommand cmd = connection.CreateCommand())
+                    {
+                        cmd.CommandText = command;
+                        if (sqlparam != null)
+                        {
+                            foreach (KeyValuePair<string, object> item in sqlparam)
+                            {
+                                cmd.Parameters.AddWithValue(item.Key, item.Value);
+                            }
+                        }
+                        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+                        connection.Close();
+                        return dt;
+                    }
+                }
+                catch (SqlException)
+                {
+                    MessageBox.Show("Error to Connect to SQL Serever", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return new DataTable();
+                }
+            }
+        }
+
         void buttonSellsFilter_Click(object sender, EventArgs e)
         {
             filterFSells.Visible = true;
@@ -308,6 +367,13 @@ namespace WindowsFormsApplication1
                 if (b) { filter_string = ""; }
             }
 
+            //dg.dataGrid.DataSource = dg.ds.Tables[dg.table_name];
+            //dg.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            DataTable dt = SQLQuery(String.Format("SELECT * FROM {0} {1}", dg.table_name, filter_string), null);
+
+            dg.dataGrid.DataSource = dt;
+            /*
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -322,6 +388,7 @@ namespace WindowsFormsApplication1
                 dg.dataGrid.DataSource = dg.ds.Tables[dg.table_name];
                 dg.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             }
+            */
         }
 
 
@@ -468,6 +535,7 @@ namespace WindowsFormsApplication1
             
             SellsInfoForm sif = new SellsInfoForm(name,date, id,type,false);
             sif.ShowDialog();
+            RefreshDGV(null, sellsDataGrid, null);
         }
 
         private void buttonOtchet_Click(object sender, EventArgs e)
