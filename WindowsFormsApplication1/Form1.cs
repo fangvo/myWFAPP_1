@@ -16,11 +16,12 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        SqlCommand sCommand;
-        MyDataGrid clientDataGrid,goodsDataGrid,sellsDataGrid,impDataGrid;
+        MyDataGrid clientDataGrid,goodsDataGrid,sellsDataGrid,impDataGrid,predDataGrid;
         //static public string connectionString = @"Data Source=FANGVO-PC\SQLEXPRESS;Initial Catalog=MyDB;User Id=fangvo;Password=84695237"";
         static public string connectionString = "";
         public String compName = "Some Name";
+        int company_id = 0;
+        DataGridView oldGoodGrid;
 
 
         Filters filterFClients,filtersFGoods,filterFSells;
@@ -33,13 +34,17 @@ namespace WindowsFormsApplication1
             goodsDataGrid = new MyDataGrid();
             sellsDataGrid = new MyDataGrid();
             impDataGrid = new MyDataGrid();
+            predDataGrid = new MyDataGrid();
             SQlLogin fsqll = new SQlLogin();
             fsqll.ShowDialog();
             this.Load +=Form1_Load;
+            this.dataGridViewClients.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewClients_CellMouseUp);
+            this.dataGridViewClients.SelectionChanged += new System.EventHandler(this.dataGridViewClients_SelectionChanged);
         }
 
         void Form1_Load(object sender, EventArgs e)
         {
+            updateLastVxod(DateTime.Now);
             comboBox2.SelectedIndex = 0;
 
             clientDataGrid.dataGrid = dataGridViewClients;
@@ -66,6 +71,12 @@ namespace WindowsFormsApplication1
             impDataGrid.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             impDataGrid.table_name = "Imp";
 
+            predDataGrid.dataGrid = dataGridViewPreds;
+            predDataGrid.dataGrid.AllowUserToAddRows = false;
+            predDataGrid.dataGrid.ReadOnly = true;
+            predDataGrid.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            predDataGrid.table_name = "Predst";
+
 
             RefreshDGV(null, clientDataGrid, comboBox2.SelectedItem.ToString());
             RefreshDGV(null, goodsDataGrid, null);
@@ -85,6 +96,26 @@ namespace WindowsFormsApplication1
             filterFClients = new Filters(GetHeaders(dataGridViewClients), clientDataGrid, comboBox2.SelectedItem.ToString());
             filtersFGoods = new Filters(GetHeaders(dataGridViewGoods), goodsDataGrid, null);
             filterFSells = new Filters(GetHeaders(dataGridSells), sellsDataGrid, null);
+        }
+
+        private void OnClosing(object sender, FormClosingEventArgs e)
+        {
+            SQLExecuteNonQuery("update Imp set last_vixod = @date where login = @login", new Dictionary<string, object> { { "@date", DateTime.Now }, { "@login", Properties.Settings.Default.ConID } });
+        }
+
+        private void updateLastVxod(DateTime date)
+        {
+            SQLExecuteNonQuery("update Imp set last_vxod = @date where login = @login", new Dictionary<string, object> { { "@date", date }, { "@login", Properties.Settings.Default.ConID } });
+            
+
+            using (DataTable dt = SQLQuery("select name from imp where login = @login", new Dictionary<string, object> { { "@login", Properties.Settings.Default.ConID } }))
+            {
+
+                string s = (string)dt.Rows[0].ItemArray[0];
+                Properties.Settings.Default.CurName = s;
+                Properties.Settings.Default.Save();
+                
+            }
         }
 
         public static void SQLExecuteNonQuery(string command, Dictionary<string, object> sqlparam)
@@ -172,6 +203,7 @@ namespace WindowsFormsApplication1
                     break;
                 case "Товары":
                     RefreshDGV(null, goodsDataGrid, null);
+                    myMhetod();
                     break;
                 case "Сделки":
                     RefreshDGV(null, sellsDataGrid, null);
@@ -181,13 +213,11 @@ namespace WindowsFormsApplication1
             }
         }
 
-
-
         private List<String> GetHeaders(DataGridView dgv)
         {
             List<string> headers = new List<string>();
 
-            foreach (DataGridViewTextBoxColumn coll in dgv.Columns)
+            foreach (DataGridViewColumn coll in dgv.Columns)
             {
                 headers.Add(coll.HeaderText);
             }
@@ -200,84 +230,35 @@ namespace WindowsFormsApplication1
             RefreshDGV(filterFClients.filterList, clientDataGrid, comboBox2.SelectedItem.ToString());
         }
 
-        /*
-        void comboBox1_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                String table_name = "",colum_name = "";
-
-                ComboBox comboBox = (ComboBox) sender;
-                if (comboBox == comboBox1) { table_name = "Clients"; colum_name = "Клиент"; }
-                comboBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                comboBox.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                AutoCompleteStringCollection col = new AutoCompleteStringCollection();
-                SqlConnection connection = new SqlConnection(connectionString);
-                connection.Open();
-                string sql = String.Format("select * from {0}", table_name);
-                SqlCommand cmd = new SqlCommand(sql, connection);
-                SqlDataReader sdr = null;
-                sdr = cmd.ExecuteReader();
-                while (sdr.Read())
-                {
-                    col.Add(sdr[colum_name].ToString());
-                }
-                sdr.Close();
-
-                comboBox.AutoCompleteCustomSource = col;
-                connection.Close();
-            }
-            catch
-            {
-            }
-        }
-        */
-
-        public static void BindDataCB(ComboBox cb, String table_name,String colom_name)
+        public static void BindDataCB(ComboBox cb, String table_name, String colom_name)
         {
             DataTable dt = null;
 
             cb.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cb.AutoCompleteSource = AutoCompleteSource.ListItems;
 
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                con.Open();
-                string strCmd = String.Format("select {0} from {1}", colom_name, table_name);
-                using (SqlCommand cmd = new SqlCommand(strCmd, con))
-                {
-                    SqlDataAdapter da = new SqlDataAdapter(strCmd, con);
-                    dt = new DataTable(colom_name);
-                    da.Fill(dt);
-                }
-            }
+            dt = SQLQuery(String.Format("select {0} from {1}", colom_name, table_name), null);
             cb.DataSource = dt;
             cb.DisplayMember = colom_name;
 
-            }
+        }
 
-
-        /*
-        public void RefreshDG(MyDataGrid dg,Boolean but)
+        public static List<object> GenerateListFromColum(String table_name, String colom_name)
         {
-            string sql = "SELECT * FROM " + dg.table_name;
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-            sCommand = new SqlCommand(sql, connection);
-            dg.adapter = new SqlDataAdapter(sCommand);
-            dg.ds = new DataSet();
-            dg.adapter.Fill(dg.ds, dg.table_name);
-            dg.table = dg.ds.Tables[dg.table_name];
-            connection.Close();
-            dg.dataGrid.DataSource = dg.ds.Tables[dg.table_name];
-            if (but)
-            {
-                dg.b_save.Enabled = false;
-            }
-            dg.dataGrid.ReadOnly = true;
-            dg.dataGrid.AllowUserToAddRows = false;
-            dg.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        }*/
+            List<object> list = new List<object>();
+
+            using (DataTable dt = SQLQuery(String.Format("select {0} from {1}", colom_name, table_name), null))
+                {
+
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        list.Add(item.ItemArray[0]);
+                    }
+                }
+            ;
+            return list;
+
+        }
 
         private static string getOper(Filters.FiltersValls filter_item)
         {
@@ -367,75 +348,12 @@ namespace WindowsFormsApplication1
                 if (b) { filter_string = ""; }
             }
 
-            //dg.dataGrid.DataSource = dg.ds.Tables[dg.table_name];
-            //dg.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
             DataTable dt = SQLQuery(String.Format("SELECT * FROM {0} {1}", dg.table_name, filter_string), null);
 
+            dg.table = dt;
+
             dg.dataGrid.DataSource = dt;
-            /*
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                SqlCommand cmd = connection.CreateCommand();
-                cmd.CommandText = String.Format("SELECT * FROM {0} {1}", dg.table_name, filter_string);
-                //cmd.Parameters.AddWithValue("@type", type);
-                dg.adapter = new SqlDataAdapter(cmd);
-                dg.ds = new DataSet();
-                dg.adapter.Fill(dg.ds, dg.table_name);
-                dg.table = dg.ds.Tables[dg.table_name];
-                connection.Close();
-                dg.dataGrid.DataSource = dg.ds.Tables[dg.table_name];
-                dg.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            }
-            */
         }
-
-
-        /*
-        /// <summary>
-        /// Сохранить измененые даные из датагрид в бд
-        /// </summary>
-        /// <param name="dg"></param>
-        
-        private void SaveDG(MyDataGrid dg)
-        {
-            dg.adapter.Update(dg.table);
-            dg.dataGrid.ReadOnly = true;
-            dg.dataGrid.AllowUserToAddRows = false;
-            dg.b_save.Enabled = false;
-            dg.b_new_edit.Enabled = true;
-            dg.b_delete.Enabled = true;
-        }
-        
-        public void updateRow(MyDataGrid dg)
-        {
-            Dictionary<String, Object> dict = new Dictionary<string,object>();
-            int rowIndex = dg.dataGrid.SelectedRows[0].Index;
-            for (int i = 0; i < dg.dataGrid.Rows[rowIndex].Cells.Count; i++)
-            {
-                String dkey = dg.dataGrid.Rows[rowIndex].Cells[i].OwningColumn.HeaderText;
-                object dval = dg.dataGrid.Rows[rowIndex].Cells[i].Value;
-                dict.Add(dkey, dval);
-            }
-            
-        }
-
-        /// <summary>
-        /// Включить режим редактирования датагрида
-        /// </summary>
-        /// <param name="dg"></param>
-        
-        private void New_EditDG(MyDataGrid dg)
-        {
-            dg.dataGrid.ReadOnly = false;
-            dg.dataGrid.AllowUserToAddRows = true;
-            dg.b_save.Enabled = true;
-            dg.b_new_edit.Enabled = false;
-            dg.b_delete.Enabled = false;
-        }
-        */
-
 
         /// <summary>
         /// Удалить выбраную строку
@@ -466,6 +384,7 @@ namespace WindowsFormsApplication1
         {
             Form clientAddForm = new ClientAddForm();
             clientAddForm.ShowDialog();
+            RefreshDGV(filterFClients.filterList, clientDataGrid, comboBox2.SelectedItem.ToString());
         }
 
         /// <summary>
@@ -478,6 +397,8 @@ namespace WindowsFormsApplication1
         {
             Form goodsAddForm = new GoodsAddForm();
             goodsAddForm.ShowDialog();
+            RefreshDGV(filtersFGoods.filterList, goodsDataGrid, null);
+            myMhetod();
         }
 
 
@@ -520,7 +441,7 @@ namespace WindowsFormsApplication1
                 }
                 sdr.Close();
             }
-            SellsInfoForm sif = new SellsInfoForm(name, date, id, type, true);
+            SellsInfoForm sif = new SellsInfoForm(name, date, id, type, true, false);
             sif.ShowDialog();
             RefreshDGV(null, sellsDataGrid, null);
         }
@@ -532,15 +453,16 @@ namespace WindowsFormsApplication1
             string name = (string)sellsDataGrid.dataGrid.SelectedRows[0].Cells["ClientName"].Value;
             string type = (string)sellsDataGrid.dataGrid.SelectedRows[0].Cells["Type"].Value;
             DateTime date = (DateTime)sellsDataGrid.dataGrid.SelectedRows[0].Cells["day"].Value;
-            
-            SellsInfoForm sif = new SellsInfoForm(name,date, id,type,false);
+            Boolean active = (Boolean)sellsDataGrid.dataGrid.SelectedRows[0].Cells["Active"].Value;
+
+            SellsInfoForm sif = new SellsInfoForm(name, date, id, type, false, active);
             sif.ShowDialog();
             RefreshDGV(null, sellsDataGrid, null);
         }
 
         private void buttonOtchet_Click(object sender, EventArgs e)
         {
-            Form otchet = new OtchetDatePicker();
+            Form otchet = new Otchet();
             otchet.ShowDialog();
 
         }
@@ -555,6 +477,86 @@ namespace WindowsFormsApplication1
             impAddForm.ShowDialog();
             RefreshDGV(null, impDataGrid, null);
         }
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        private void dataGridViewClients_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridView dg = (DataGridView)sender;
+            int index_row = 1;
+            DataTable dt;
+
+            try
+            {
+                index_row = dg.SelectedRows[0].Index;
+            }
+
+            catch (IndexOutOfRangeException) { return; }
+            catch (ArgumentOutOfRangeException) { return; }
+
+            company_id = (int)dg.Rows[index_row].Cells["UID"].Value;
+
+            dt = SQLQuery("Select name,Phone From Predst where [Company _ID] = @id", new Dictionary<string, object> { { "@id", company_id } });
+            dataGridViewPreds.DataSource = dt;
+        }
+
+        private void dataGridViewClients_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
+        }
+
+        private void buttonPredAdd_Click(object sender, EventArgs e)
+        {
+            Form predAdd = new PredsAdd(company_id);
+            predAdd.ShowDialog();
+            dataGridViewPreds.DataSource = SQLQuery("Select name,Phone From Predst where [Company _ID] = @id", new Dictionary<string, object> { { "@id", company_id } });
+            
+        }
+
+
+        private void myMhetod()
+        {
+            
+            DataTable dt = goodsDataGrid.table;
+            IEnumerable<DataRow> query =
+                from tbl in dt.AsEnumerable()
+                where tbl.Field<DateTime>("Last") <= DateTime.Now.AddDays(-14)
+                select tbl;
+            if (query.Count() > 0)
+            {
+                if (oldGoodGrid == null)
+                {
+                    oldGoodGrid = new DataGridView();
+                    oldGoodGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                    | System.Windows.Forms.AnchorStyles.Left)
+                    | System.Windows.Forms.AnchorStyles.Right)));
+
+                    oldGoodGrid.AllowUserToAddRows = false;
+                    oldGoodGrid.ReadOnly = true;
+                    oldGoodGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                    dataGridViewGoods.Location = new System.Drawing.Point(3, 150);
+                    dataGridViewGoods.Size = new System.Drawing.Size(760, 360);
+                    oldGoodGrid.Location = new System.Drawing.Point(3, 35);
+                    oldGoodGrid.Size = new System.Drawing.Size(760, 100);
+                    this.tabPageGoods.Controls.Add(oldGoodGrid);
+                }
+                oldGoodGrid.DataSource = query.CopyToDataTable<DataRow>();
+            }
+            else
+            {
+                this.Controls.Remove(oldGoodGrid);
+                oldGoodGrid = null;
+                dataGridViewGoods.Location = new System.Drawing.Point(3, 35);
+                dataGridViewGoods.Size = new System.Drawing.Size(760, 475);
+            }
+            
+        }
+
+        
+
+        
 
 
 

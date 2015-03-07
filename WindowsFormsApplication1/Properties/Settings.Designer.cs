@@ -58,5 +58,137 @@ namespace WindowsFormsApplication1.Properties {
                 this["ConPas"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CurName {
+            get {
+                return ((string)(this["CurName"]));
+            }
+            set {
+                this["CurName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Название моей компании")]
+        public string MyComName {
+            get {
+                return ((string)(this["MyComName"]));
+            }
+            set {
+                this["MyComName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000000000")]
+        public long MyComINN {
+            get {
+                return ((long)(this["MyComINN"]));
+            }
+            set {
+                this["MyComINN"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100000000000")]
+        public long MyComKPP {
+            get {
+                return ((long)(this["MyComKPP"]));
+            }
+            set {
+                this["MyComKPP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100000000000000")]
+        public long MyComOGRN {
+            get {
+                return ((long)(this["MyComOGRN"]));
+            }
+            set {
+                this["MyComOGRN"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Адрес мой")]
+        public string MyComAdres {
+            get {
+                return ((string)(this["MyComAdres"]));
+            }
+            set {
+                this["MyComAdres"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("12312512141")]
+        public long MyComRS {
+            get {
+                return ((long)(this["MyComRS"]));
+            }
+            set {
+                this["MyComRS"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Банк мой")]
+        public string MyComBank {
+            get {
+                return ((string)(this["MyComBank"]));
+            }
+            set {
+                this["MyComBank"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("446161622")]
+        public long MyComBIK {
+            get {
+                return ((long)(this["MyComBIK"]));
+            }
+            set {
+                this["MyComBIK"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Диретор мой")]
+        public string MyComDirector {
+            get {
+                return ((string)(this["MyComDirector"]));
+            }
+            set {
+                this["MyComDirector"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4654646646")]
+        public long MyComKS {
+            get {
+                return ((long)(this["MyComKS"]));
+            }
+            set {
+                this["MyComKS"] = value;
+            }
+        }
     }
 }

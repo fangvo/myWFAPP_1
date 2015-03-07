@@ -11,5 +11,38 @@
     <Setting Name="ConPas" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="CurName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MyComName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Название моей компании</Value>
+    </Setting>
+    <Setting Name="MyComINN" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">1000000000</Value>
+    </Setting>
+    <Setting Name="MyComKPP" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">100000000000</Value>
+    </Setting>
+    <Setting Name="MyComOGRN" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">100000000000000</Value>
+    </Setting>
+    <Setting Name="MyComAdres" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Адрес мой</Value>
+    </Setting>
+    <Setting Name="MyComRS" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">12312512141</Value>
+    </Setting>
+    <Setting Name="MyComBank" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Банк мой</Value>
+    </Setting>
+    <Setting Name="MyComBIK" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">446161622</Value>
+    </Setting>
+    <Setting Name="MyComDirector" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Диретор мой</Value>
+    </Setting>
+    <Setting Name="MyComKS" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">4654646646</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

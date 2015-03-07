@@ -30,6 +30,9 @@
         {
             this.tabHost = new System.Windows.Forms.TabControl();
             this.tabPageClients = new System.Windows.Forms.TabPage();
+            this.buttonPredAdd = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dataGridViewPreds = new System.Windows.Forms.DataGridView();
             this.buttonCientFilter = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.dataGridViewClients = new System.Windows.Forms.DataGridView();
@@ -41,6 +44,7 @@
             this.dataGridViewGoods = new System.Windows.Forms.DataGridView();
             this.buttonAdd_Goods = new System.Windows.Forms.Button();
             this.tabPageSells = new System.Windows.Forms.TabPage();
+            this.buttonOtchet = new System.Windows.Forms.Button();
             this.buttonSellsFilter = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.buttonAdd_Sells = new System.Windows.Forms.Button();
@@ -48,11 +52,11 @@
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.dataGridImp = new System.Windows.Forms.DataGridView();
             this.buttonImpAdd = new System.Windows.Forms.Button();
-            this.buttonOtchet = new System.Windows.Forms.Button();
+            this.dataGridImp = new System.Windows.Forms.DataGridView();
             this.tabHost.SuspendLayout();
             this.tabPageClients.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPreds)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewClients)).BeginInit();
             this.tabPageGoods.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGoods)).BeginInit();
@@ -80,6 +84,9 @@
             // 
             // tabPageClients
             // 
+            this.tabPageClients.Controls.Add(this.buttonPredAdd);
+            this.tabPageClients.Controls.Add(this.label1);
+            this.tabPageClients.Controls.Add(this.dataGridViewPreds);
             this.tabPageClients.Controls.Add(this.buttonCientFilter);
             this.tabPageClients.Controls.Add(this.comboBox2);
             this.tabPageClients.Controls.Add(this.dataGridViewClients);
@@ -93,9 +100,39 @@
             this.tabPageClients.Text = "Клиенты";
             this.tabPageClients.UseVisualStyleBackColor = true;
             // 
+            // buttonPredAdd
+            // 
+            this.buttonPredAdd.Location = new System.Drawing.Point(686, 411);
+            this.buttonPredAdd.Name = "buttonPredAdd";
+            this.buttonPredAdd.Size = new System.Drawing.Size(75, 23);
+            this.buttonPredAdd.TabIndex = 15;
+            this.buttonPredAdd.Text = "Добавить";
+            this.buttonPredAdd.UseVisualStyleBackColor = true;
+            this.buttonPredAdd.Click += new System.EventHandler(this.buttonPredAdd_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 416);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(85, 13);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "Предстовители";
+            // 
+            // dataGridViewPreds
+            // 
+            this.dataGridViewPreds.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewPreds.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewPreds.Location = new System.Drawing.Point(3, 441);
+            this.dataGridViewPreds.Name = "dataGridViewPreds";
+            this.dataGridViewPreds.Size = new System.Drawing.Size(760, 69);
+            this.dataGridViewPreds.TabIndex = 13;
+            // 
             // buttonCientFilter
             // 
-            this.buttonCientFilter.Location = new System.Drawing.Point(25, 42);
+            this.buttonCientFilter.Location = new System.Drawing.Point(106, 8);
             this.buttonCientFilter.Name = "buttonCientFilter";
             this.buttonCientFilter.Size = new System.Drawing.Size(75, 23);
             this.buttonCientFilter.TabIndex = 12;
@@ -120,9 +157,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewClients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewClients.Location = new System.Drawing.Point(3, 70);
+            this.dataGridViewClients.Location = new System.Drawing.Point(3, 37);
             this.dataGridViewClients.Name = "dataGridViewClients";
-            this.dataGridViewClients.Size = new System.Drawing.Size(760, 440);
+            this.dataGridViewClients.Size = new System.Drawing.Size(760, 364);
             this.dataGridViewClients.TabIndex = 10;
             // 
             // button8
@@ -214,6 +251,16 @@
             this.tabPageSells.Text = "Сделки";
             this.tabPageSells.UseVisualStyleBackColor = true;
             // 
+            // buttonOtchet
+            // 
+            this.buttonOtchet.Location = new System.Drawing.Point(688, 46);
+            this.buttonOtchet.Name = "buttonOtchet";
+            this.buttonOtchet.Size = new System.Drawing.Size(75, 23);
+            this.buttonOtchet.TabIndex = 8;
+            this.buttonOtchet.Text = "Отчеты";
+            this.buttonOtchet.UseVisualStyleBackColor = true;
+            this.buttonOtchet.Click += new System.EventHandler(this.buttonOtchet_Click);
+            // 
             // buttonSellsFilter
             // 
             this.buttonSellsFilter.Location = new System.Drawing.Point(134, 46);
@@ -281,14 +328,6 @@
             this.tabPage3.Text = "Сотрудники";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // dataGridImp
-            // 
-            this.dataGridImp.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridImp.Location = new System.Drawing.Point(3, 70);
-            this.dataGridImp.Name = "dataGridImp";
-            this.dataGridImp.Size = new System.Drawing.Size(760, 440);
-            this.dataGridImp.TabIndex = 0;
-            // 
             // buttonImpAdd
             // 
             this.buttonImpAdd.Location = new System.Drawing.Point(5, 3);
@@ -299,23 +338,24 @@
             this.buttonImpAdd.UseVisualStyleBackColor = true;
             this.buttonImpAdd.Click += new System.EventHandler(this.buttonImpAdd_Click);
             // 
-            // buttonOtchet
+            // dataGridImp
             // 
-            this.buttonOtchet.Location = new System.Drawing.Point(688, 46);
-            this.buttonOtchet.Name = "buttonOtchet";
-            this.buttonOtchet.Size = new System.Drawing.Size(75, 23);
-            this.buttonOtchet.TabIndex = 8;
-            this.buttonOtchet.Text = "Отчеты";
-            this.buttonOtchet.UseVisualStyleBackColor = true;
-            this.buttonOtchet.Click += new System.EventHandler(this.buttonOtchet_Click);
+            this.dataGridImp.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridImp.Location = new System.Drawing.Point(3, 70);
+            this.dataGridImp.Name = "dataGridImp";
+            this.dataGridImp.Size = new System.Drawing.Size(760, 440);
+            this.dataGridImp.TabIndex = 0;
             // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(784, 561);
             this.Controls.Add(this.tabHost);
             this.Name = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnClosing);
             this.tabHost.ResumeLayout(false);
             this.tabPageClients.ResumeLayout(false);
+            this.tabPageClients.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPreds)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewClients)).EndInit();
             this.tabPageGoods.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGoods)).EndInit();
@@ -368,6 +408,9 @@
         private System.Windows.Forms.Button buttonImpAdd;
         private System.Windows.Forms.DataGridView dataGridImp;
         private System.Windows.Forms.Button buttonOtchet;
+        private System.Windows.Forms.DataGridView dataGridViewPreds;
+        private System.Windows.Forms.Button buttonPredAdd;
+        private System.Windows.Forms.Label label1;
     }
 }
 

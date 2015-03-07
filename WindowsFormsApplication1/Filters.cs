@@ -259,6 +259,8 @@ namespace WindowsFormsApplication1
             cb.AutoCompleteSource = AutoCompleteSource.ListItems;
             List<object> slist = new List<object>();
 
+
+            
             using (SqlConnection con = new SqlConnection(Form1.connectionString))
             {
                 con.Open();

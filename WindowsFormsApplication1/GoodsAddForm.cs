@@ -30,7 +30,7 @@ namespace WindowsFormsApplication1
             String ed = textBoxED.Text;
             SqlConnection conn = new SqlConnection(@"Data Source=FANGVO-PC\SQLEXPRESS;Initial Catalog=MyDB;Integrated Security=True");
             SqlCommand cmd = conn.CreateCommand();
-            cmd.CommandText = @"INSERT INTO Goods VALUES ( '" + name + "', " + cena + ", " + kolvo + ", " + articyl + ", " + cod + ", '" + ed + "' );";
+            cmd.CommandText = @"INSERT INTO Goods VALUES ( '" + name + "', " + cena + ", " + kolvo + ", " + articyl + ", " + cod + ", '" + ed + "', '2000-01-01' );";
             conn.Open();
             cmd.ExecuteNonQuery();
             conn.Close();

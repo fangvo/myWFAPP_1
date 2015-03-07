@@ -72,11 +72,17 @@
     </Compile>
     <Compile Include="MyData.cs" />
     <Compile Include="NewWord.cs" />
-    <Compile Include="OtchetDatePicker.cs">
+    <Compile Include="Otchet.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OtchetDatePicker.Designer.cs">
-      <DependentUpon>OtchetDatePicker.cs</DependentUpon>
+    <Compile Include="Otchet.Designer.cs">
+      <DependentUpon>Otchet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PredsAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PredsAdd.Designer.cs">
+      <DependentUpon>PredsAdd.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -110,8 +116,11 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OtchetDatePicker.resx">
-      <DependentUpon>OtchetDatePicker.cs</DependentUpon>
+    <EmbeddedResource Include="Otchet.resx">
+      <DependentUpon>Otchet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PredsAdd.resx">
+      <DependentUpon>PredsAdd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

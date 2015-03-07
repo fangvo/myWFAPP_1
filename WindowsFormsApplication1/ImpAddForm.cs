@@ -34,25 +34,25 @@ namespace WindowsFormsApplication1
             int staz = Int32.Parse(textBoxStaz.Text);
             long zp = Int64.Parse(textBoxZP.Text);
             String dolz = textBoxDolz.Text;
-            using (SqlConnection conn = new SqlConnection(Form1.connectionString))
-            {
-            SqlCommand cmd = conn.CreateCommand();
-            cmd.CommandText = String.Format("INSERT INTO Imp VALUES ( @name,@adres,@staz,@zp,@dolz );");
-            cmd.Parameters.AddWithValue("@name", name);
-            cmd.Parameters.AddWithValue("@adres", adres);
-            cmd.Parameters.AddWithValue("@staz", staz);
-            cmd.Parameters.AddWithValue("@zp", zp);
-            cmd.Parameters.AddWithValue("@dolz", dolz);
+            Form1.SQLQuery("INSERT INTO Imp VALUES ( @name,@adres,@staz,@zp,@dolz,@otdel,@login,@date,@date )",
+                new Dictionary<string, object> 
+                {   { "@name", name },
+                    { "@login", textBox1.Text } ,
+                    {"@adres", adres},
+                    {"@staz", staz},
+                    {"@zp", zp},
+                    {"@dolz", dolz},
+                    {"@otdel",textBox2.Text},
+                    {"@date", "1/1/1753 12:00:00"}
+                });
 
-
-            conn.Open();
-            cmd.ExecuteNonQuery();
-            conn.Close();
-            }
-            //dgview.Update();
-            //dgview.Refresh();
             this.Close();
             
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
