@@ -23,17 +23,40 @@ namespace WindowsFormsApplication1
         private void button1_Click(object sender, EventArgs e)
         {
             String name = textBoxTName.Text;
-            decimal cena = decimal.Parse(textBoxCena.Text);
-            Int64 kolvo = Int64.Parse(textBoxKolvo.Text);
-            Int64 articyl = Int64.Parse(textBoxTArticyl.Text);
-            Int64 cod = Int64.Parse(textBoxStrihCod.Text);
+            decimal cena;
+
+            if (!decimal.TryParse(textBoxCena.Text, out cena))
+            {
+                MessageBox.Show("Введие цифры", "Error", MessageBoxButtons.OK);
+                return;
+            }
+            Int64 kolvo;
+            if (!Int64.TryParse(textBoxKolvo.Text, out kolvo))
+            {
+                MessageBox.Show("Введие цифры", "Error", MessageBoxButtons.OK);
+                return;
+            }
+            Int64 articyl;
+            if (!Int64.TryParse(textBoxKolvo.Text, out articyl))
+            {
+                MessageBox.Show("Введие цифры", "Error", MessageBoxButtons.OK);
+                return;
+            }
+            Int64 cod ;
+            if (!Int64.TryParse(textBoxStrihCod.Text, out cod))
+            {
+                MessageBox.Show("Введие цифры", "Error", MessageBoxButtons.OK);
+                return;
+            }
             String ed = textBoxED.Text;
-            SqlConnection conn = new SqlConnection(@"Data Source=FANGVO-PC\SQLEXPRESS;Initial Catalog=MyDB;Integrated Security=True");
-            SqlCommand cmd = conn.CreateCommand();
-            cmd.CommandText = @"INSERT INTO Goods VALUES ( '" + name + "', " + cena + ", " + kolvo + ", " + articyl + ", " + cod + ", '" + ed + "', '2000-01-01' );";
-            conn.Open();
-            cmd.ExecuteNonQuery();
-            conn.Close();
+            Form1.SQLExecuteNonQuery(String.Format("INSERT INTO Goods VALUES ( @name,@cena,@kolvo,@articyl,@cod,@ed,'2000-01-01' );"),
+                new Dictionary<string, object> {
+                { "@name", name },
+                { "@cena", cena },
+                { "@kolvo", kolvo },
+                { "@articyl", articyl }, 
+                { "@cod", cod }, 
+                { "@ed", ed }});
             this.Close();
         }
     }
