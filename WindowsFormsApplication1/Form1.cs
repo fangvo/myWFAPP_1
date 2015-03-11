@@ -4,10 +4,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 
 // LIKE '%es%';
@@ -38,7 +40,6 @@ namespace WindowsFormsApplication1
             SQlLogin fsqll = new SQlLogin();
             fsqll.ShowDialog();
             this.Load +=Form1_Load;
-            this.dataGridViewClients.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewClients_CellMouseUp);
             this.dataGridViewClients.SelectionChanged += new System.EventHandler(this.dataGridViewClients_SelectionChanged);
         }
 
@@ -47,35 +48,48 @@ namespace WindowsFormsApplication1
             updateLastVxod(DateTime.Now);
             comboBox2.SelectedIndex = 0;
 
+            
+
             clientDataGrid.dataGrid = dataGridViewClients;
             clientDataGrid.dataGrid.AllowUserToAddRows = false;
             clientDataGrid.dataGrid.ReadOnly = true;
             clientDataGrid.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            clientDataGrid.dataGrid.RowHeadersVisible = false;
             clientDataGrid.table_name = "Clients";
 
             goodsDataGrid.dataGrid = dataGridViewGoods;
             goodsDataGrid.dataGrid.AllowUserToAddRows = false;
             goodsDataGrid.dataGrid.ReadOnly = true;
             goodsDataGrid.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            goodsDataGrid.dataGrid.RowHeadersVisible = false;
             goodsDataGrid.table_name = "Goods";
 
             sellsDataGrid.dataGrid = dataGridSells;
             sellsDataGrid.dataGrid.AllowUserToAddRows = false;
             sellsDataGrid.dataGrid.ReadOnly = true;
             sellsDataGrid.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            sellsDataGrid.dataGrid.RowHeadersVisible = false;
             sellsDataGrid.table_name = "Sells";
 
             impDataGrid.dataGrid = dataGridImp;
             impDataGrid.dataGrid.AllowUserToAddRows = false;
             impDataGrid.dataGrid.ReadOnly = true;
             impDataGrid.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            impDataGrid.dataGrid.RowHeadersVisible = false;
             impDataGrid.table_name = "Imp";
 
             predDataGrid.dataGrid = dataGridViewPreds;
             predDataGrid.dataGrid.AllowUserToAddRows = false;
             predDataGrid.dataGrid.ReadOnly = true;
             predDataGrid.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            predDataGrid.dataGrid.RowHeadersVisible = false;
             predDataGrid.table_name = "Predst";
+
+
+            dataGridViewOthetByTimeAndName.AllowUserToAddRows = false;
+            dataGridViewOthetByTimeAndName.ReadOnly = true;
+            dataGridViewOthetByTimeAndName.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewOthetByTimeAndName.RowHeadersVisible = false;
 
 
             RefreshDGV(null, clientDataGrid, comboBox2.SelectedItem.ToString());
@@ -96,6 +110,8 @@ namespace WindowsFormsApplication1
             filterFClients = new Filters(GetHeaders(dataGridViewClients), clientDataGrid, comboBox2.SelectedItem.ToString());
             filtersFGoods = new Filters(GetHeaders(dataGridViewGoods), goodsDataGrid, null);
             filterFSells = new Filters(GetHeaders(dataGridSells), sellsDataGrid, null);
+
+
         }
 
         private void OnClosing(object sender, FormClosingEventArgs e)
@@ -207,6 +223,9 @@ namespace WindowsFormsApplication1
                     break;
                 case "Сделки":
                     RefreshDGV(null, sellsDataGrid, null);
+                    break;
+                case "Отчеты":
+                    BindDataCB(comboBoxOtchetByName, "Imp", "name");
                     break;
                 default:
                     break;
@@ -460,12 +479,6 @@ namespace WindowsFormsApplication1
             RefreshDGV(null, sellsDataGrid, null);
         }
 
-        private void buttonOtchet_Click(object sender, EventArgs e)
-        {
-            Form otchet = new Otchet();
-            otchet.ShowDialog();
-
-        }
 
         
         //////////////////////////////////////////////////Tab Imp///////////////////////////////////////////////////
@@ -502,11 +515,6 @@ namespace WindowsFormsApplication1
             dataGridViewPreds.DataSource = dt;
         }
 
-        private void dataGridViewClients_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
-        {
-
-        }
-
         private void buttonPredAdd_Click(object sender, EventArgs e)
         {
             Form predAdd = new PredsAdd(company_id);
@@ -534,6 +542,7 @@ namespace WindowsFormsApplication1
                     | System.Windows.Forms.AnchorStyles.Right)));
 
                     oldGoodGrid.AllowUserToAddRows = false;
+                    oldGoodGrid.RowHeadersVisible = false;
                     oldGoodGrid.ReadOnly = true;
                     oldGoodGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                     dataGridViewGoods.Location = new System.Drawing.Point(3, 150);
@@ -554,12 +563,361 @@ namespace WindowsFormsApplication1
             
         }
 
-        
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Form otchet = new Otchet();
+            otchet.ShowDialog();
+        }
 
-        
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        #region OtchetTab
+
+        private void buttonMakeDataGrid_Click(object sender, EventArgs e)
+        {
+            dataGridViewOthetByTimeAndName.DataSource = GetDataTableOtchet();
+        }
+
+        private DataTable GetDataTableOtchet()
+        {
+            string day_1 = dateTimePicker1.Value.ToShortDateString();
+            string day_2 = dateTimePicker2.Value.ToShortDateString();
+            string s1 = "";
+
+            string cbtext = comboBoxOtchetByName.Text;
+            if (!cbtext.Equals(""))
+            {
+                s1 = String.Format("and [Кем] = '{0}'", cbtext);
+            }
+            return Form1.SQLQuery(
+                String.Format("SELECT ClientName,Type,day,SUM FROM {0} WHERE (day >= @day1 AND day <= @day2 and Active = 'true'){1};", "Sells", s1),
+                new Dictionary<string, object> { { "@day1", day_1 }, { "@day2", day_2 } }
+                );
+        }
+
+        private decimal GetSumOtchet()
+        {
+            string day_1 = dateTimePicker1.Value.ToShortDateString();
+            string day_2 = dateTimePicker2.Value.ToShortDateString();
+            string s1 = "";
+
+            string cbtext = comboBoxOtchetByName.Text;
+            if (!cbtext.Equals(""))
+            {
+                s1 = String.Format("and [Кем] = '{0}'", cbtext);
+            }
+            DataTable dt = Form1.SQLQuery(
+                String.Format("SELECT SUM(SUM) FROM {0} WHERE (day >= @day1 AND day <= @day2 and Active = 'true'){1};", "Sells", s1),
+                new Dictionary<string, object> { { "@day1", day_1 }, { "@day2", day_2 } }
+                );
+            return (decimal)dt.Rows[0].ItemArray[0];
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            string s = "";
+            if (!comboBoxOtchetByName.Text.Equals(""))
+            {
+                s = String.Format("Отфильтровано по '{0}'", comboBoxOtchetByName.Text);
+            }
+            Dictionary<string, object> d = new Dictionary<string, object> { { "DATA1",  String.Format("c {0}",dateTimePicker1.Value.ToShortDateString()) },
+            { "DATA2", String.Format("по {0}",dateTimePicker2.Value.ToShortDateString()) },
+            {"WHO", String.Format(" {0}",s)},
+            {"SUM",String.Format("Сумма: {0}",GetSumOtchet())}
+            };
+            new NewWord().MakeWordDoc("\\temp_otchet.dotx", GetDataTableOtchet(), d);
+
+        }
 
 
 
-        
+
+        #endregion
+
+        /*
+        private DataTable GetDataTableOtchetMonth( DateTime date)
+        {
+            var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+            var lastDayOfMonth = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
+
+            return Form1.SQLQuery(
+                String.Format("SELECT ClientName,Type,day,SUM FROM {0} WHERE (day >= @day1 AND day <= @day2 and Active = 'true');", "Sells"),
+                new Dictionary<string, object> { { "@day1", firstDayOfMonth }, { "@day2", lastDayOfMonth } }
+                );
+        }
+
+        */
+
+        private decimal GetSumOtchetMonth(DateTime date)
+        {
+            var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+            var lastDayOfMonth = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
+
+            decimal arenda = 0;
+
+            if (!decimal.TryParse(textBoxArenda.Text, out arenda))
+            {
+                MessageBox.Show("Введие цифры", "Error", MessageBoxButtons.OK);
+                return 0;
+            }
+
+            DataTable dt = Form1.SQLQuery(
+                String.Format("SELECT SUM(SUM) as Sum FROM {0} WHERE (day >= @day1 AND day <= @day2 and Active = 'true' and Type = 'Продажа');", "Sells"),
+                new Dictionary<string, object> { { "@day1", firstDayOfMonth }, { "@day2", lastDayOfMonth } }
+                );
+
+            decimal sum;
+            object d = dt.Rows[0].ItemArray[0];
+            if (!(d is System.DBNull))
+            {
+                sum = (decimal)d;
+
+            }
+            else
+            {
+                sum = 0;
+            }
+            
+
+            DataTable dt2 = Form1.SQLQuery(String.Format("SELECT SUM(zp) as Sum FROM {0};", "Imp"), null);
+
+            decimal sum2 = (decimal)dt2.Rows[0].ItemArray[0];
+
+            DataTable dt3 = Form1.SQLQuery(
+                String.Format("SELECT SUM(SUM) as Sum FROM {0} WHERE (day >= @day1 AND day <= @day2 and Active = 'true' and Type = 'Покупка');", "Sells"),
+                new Dictionary<string, object> { { "@day1", firstDayOfMonth }, { "@day2", lastDayOfMonth } }
+                );
+
+
+            decimal sum3;
+            object d3 = dt3.Rows[0].ItemArray[0];
+            if (!(d3 is System.DBNull))
+            {
+                sum3 = (decimal)d3;
+
+            }
+            else
+            {
+                sum3 = 0;
+            }
+
+            return sum - Decimal.Multiply(sum2, (decimal)1.13) - sum3 - arenda;
+        }
+
+        /// <summary>
+        /// Отчет по Месецам обновить таблицу
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            DateTime date = dateTimePickerMontOnly.Value;
+            label4.Text = String.Format(" {1} : {0:C}",GetSumOtchetMonth(date),date.ToString("MMMM"));
+
+        }
+
+        /*
+
+        /// <summary>
+        /// Отчет по Месецам в Ворд
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            DateTime date = dateTimePickerMontOnly.Value;
+
+            Dictionary<string, object> d = new Dictionary<string, object> { { "DATA1", String.Format("за {0}",dateTimePicker1.Value.ToString("MMMM")) },
+            { "DATA2", "" },
+            {"WHO", ""},
+            {"SUM",String.Format("Сумма: {0}",GetSumOtchetMonth(date))}
+            };
+            new NewWord().MakeWordDoc("\\temp_otchet.dotx", GetDataTableOtchetMonth(date), d);
+            
+        }
+          
+        */
+
+
+        private void OtchetTab_Changed(object sender, EventArgs e)
+        {
+            TabControl tc = (TabControl)sender;
+            string s = (string)tc.SelectedTab.Tag;
+            switch (s)
+            {
+                case "Tab1":
+                    BindDataCB(comboBoxOtchetByName,"Imp","name");
+                    break;
+                case "Tab2":
+                    break;
+                case "Tab3":
+                    //GenerateChart();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+       
+
+        private List<string> GetListOfProiz()
+        {
+            DataTable dt = null;
+
+            dt = SQLQuery(String.Format("select name from Goods"), null);
+
+            List<string> s = dt.AsEnumerable().Select(x => x[0].ToString().Split(new Char[] { ' ' }).Last()).Distinct().ToList();
+
+            return s;
+            //cb.DisplayMember = colom_name;
+        }
+
+        private DataTable GetTableForProizOtchet(DateTime date)
+        {
+            var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+            var lastDayOfMonth = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Производитель", typeof(string));
+	        dt.Columns.Add("Сумма", typeof(object));
+            List<string> proiz = GetListOfProiz();
+            foreach (string proiz_name in proiz)
+            {
+                DataTable temp = Form1.SQLQuery(
+                    String.Format("SELECT SUM(chena) as SUM FROM SellInfo as si left join Sells as s on si.idofsell = s.ID where si.name like '%{0}%' and s.Type = 'Продажа' and s.day >= @day1 AND s.day <= @day2 and s.Active = 'true'", proiz_name),
+                new Dictionary<string, object> { { "@day1", firstDayOfMonth }, { "@day2", lastDayOfMonth }/*, { "@name", proiz_name }*/ }
+                );
+                object d = temp.Rows[0].ItemArray[0];
+                if (!(d is System.DBNull))
+                {
+                    dt.Rows.Add(proiz_name, d);
+                }
+                else
+                {
+                    dt.Rows.Add(proiz_name, 0);
+                }
+                
+            }
+            return dt;
+            
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            DateTime date = dateTimePicker3.Value;
+            dataGridViewOtchetProiz.DataSource = GetTableForProizOtchet(date);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            
+            GenerateChart();
+        }
+
+        private void GenerateChart()
+        {
+
+            List<String> proiz = GetListOfProiz();
+            chart1.Series.Clear();
+            foreach (String item in proiz)
+            {
+                chart1.Series.Add(item);
+                chart1.Series[item].ChartType = SeriesChartType.Line;
+                chart1.Series[item].BorderWidth = 3;
+                chart1.Series[item].MarkerStyle = MarkerStyle.Circle;
+                chart1.Series[item].ToolTip = "#SERIESNAME : #VALY{F2}";
+            }
+
+            chart1.ChartAreas["ChartArea1"].AxisX.Interval = 1;
+
+            chart1.ChartAreas["ChartArea1"].AxisX.IsMarginVisible = false;
+
+            /*
+            foreach (var series in chart1.Series)
+            {
+                series.Points.Clear();
+            }
+            */
+
+            List<String> names = DateTimeFormatInfo.CurrentInfo.MonthNames.ToList();
+            names.RemoveAt(12);
+            DateTime date = DateTime.Now.AddYears(-1).AddMonths(1);
+            for (int i = 1; i < 13; i++)
+            {
+                DateTime firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+                DateTime lastDayOfMonth = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(DateTime.Now.Year, date.Month));
+                
+                foreach (String item in proiz)
+                {
+                    DataTable temp = Form1.SQLQuery(
+                    String.Format("SELECT SUM(chena) as SUM FROM SellInfo as si left join Sells as s on si.idofsell = s.ID where si.name like '%{0}%' and s.Type = 'Продажа' and s.day >= @day1 AND s.day <= @day2 and s.Active = 'true'", item),
+                new Dictionary<string, object> { { "@day1", firstDayOfMonth }, { "@day2", lastDayOfMonth }/*, { "@name", proiz_name }*/ }
+                );
+                    object d = temp.Rows[0].ItemArray[0];
+                    if (!(d is System.DBNull))
+                    {
+                        chart1.Series[item].Points.AddXY(date.ToString("MMMM - yy") ,d);
+                        
+                    }
+                    else
+                    {
+                        chart1.Series[item].Points.AddXY(date.ToString("MMMM - yy"), 0);
+                    }
+                    //chart1.Series[item].Points.AddXY(month, random.Next(5, 95));
+                }
+                date = date.AddMonths(1);
+            }
+        }
+
+        private void GenerateChart2()
+        {
+
+            chart1.Series.Clear();
+            chart1.Series.Add("Доход");
+            chart1.Series["Доход"].ChartType = SeriesChartType.Line;
+            chart1.Series["Доход"].BorderWidth = 3;
+            chart1.Series["Доход"].MarkerStyle = MarkerStyle.Circle;
+            chart1.Series["Доход"].ToolTip = "#SERIESNAME : #VALY{F2}";
+
+            chart1.ChartAreas["ChartArea1"].AxisX.Interval = 1;
+
+            chart1.ChartAreas["ChartArea1"].AxisX.IsMarginVisible = false;
+
+
+            List<String> names = DateTimeFormatInfo.CurrentInfo.MonthNames.ToList();
+            names.RemoveAt(12);
+            DateTime date = DateTime.Now.AddYears(-1).AddMonths(1);
+            for (int i = 1; i < 13; i++)
+            {
+
+                object d = GetSumOtchetMonth(date);
+                if (!(d is System.DBNull))
+                {
+                    chart1.Series["Доход"].Points.AddXY(date.ToString("MMMM - yy"), d);
+
+                }
+                else
+                {
+                    chart1.Series["Доход"].Points.AddXY(date.ToString("MMMM - yy"), 0);
+                }
+                //chart1.Series[item].Points.AddXY(month, random.Next(5, 95));
+                date = date.AddMonths(1);
+            }
+
+
+
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            GenerateChart2();
+        }
+
+
+
+
     }
 }

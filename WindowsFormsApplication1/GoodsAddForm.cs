@@ -37,7 +37,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             Int64 articyl;
-            if (!Int64.TryParse(textBoxKolvo.Text, out articyl))
+            if (!Int64.TryParse(textBoxTArticyl.Text, out articyl))
             {
                 MessageBox.Show("Введие цифры", "Error", MessageBoxButtons.OK);
                 return;
