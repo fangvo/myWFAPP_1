@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -11,20 +12,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
-
-// LIKE '%es%';
-
 namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
         MyDataGrid clientDataGrid,goodsDataGrid,sellsDataGrid,impDataGrid,predDataGrid;
-        //static public string connectionString = @"Data Source=FANGVO-PC\SQLEXPRESS;Initial Catalog=MyDB;User Id=fangvo;Password=84695237"";
         static public string connectionString = "";
         public String compName = "Some Name";
         int company_id = 0;
         DataGridView oldGoodGrid;
-
 
         Filters filterFClients,filtersFGoods,filterFSells;
 
@@ -42,6 +38,8 @@ namespace WindowsFormsApplication1
             this.Load +=Form1_Load;
             this.dataGridViewClients.SelectionChanged += new System.EventHandler(this.dataGridViewClients_SelectionChanged);
         }
+
+        #region события формы
 
         void Form1_Load(object sender, EventArgs e)
         {
@@ -116,7 +114,7 @@ namespace WindowsFormsApplication1
 
         private void OnClosing(object sender, FormClosingEventArgs e)
         {
-            SQLExecuteNonQuery("update Imp set last_vixod = @date where login = @login", new Dictionary<string, object> { { "@date", DateTime.Now }, { "@login", Properties.Settings.Default.ConID } });
+                SQLExecuteNonQuery("update Imp set last_vixod = @date where login = @login", new Dictionary<string, object> { { "@date", DateTime.Now }, { "@login", Properties.Settings.Default.ConID } });
         }
 
         private void updateLastVxod(DateTime date)
@@ -133,6 +131,116 @@ namespace WindowsFormsApplication1
                 
             }
         }
+
+
+
+        /// <summary>
+        /// Обработка смены вкладки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        private void TabIndexChanced(object sender, EventArgs e)
+        {
+            TabControl tc = (TabControl)sender;
+            string s = tc.SelectedTab.Text;
+            switch (s)
+            {
+                case "Клиенты":
+                    RefreshDGV(null, clientDataGrid, comboBox2.SelectedItem.ToString());
+                    break;
+                case "Товары":
+                    RefreshDGV(null, goodsDataGrid, null);
+                    myMhetod();
+                    break;
+                case "Сделки":
+                    RefreshDGV(null, sellsDataGrid, null);
+                    break;
+                case "Отчеты":
+                    BindDataCB(comboBoxOtchetByName, "Imp", "name");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Созданиу листа заголовков колонок таблицы
+        /// </summary>
+        /// <param name="dgv"></param>
+        /// <returns></returns>
+
+        private List<String> GetHeaders(DataGridView dgv)
+        {
+            List<string> headers = new List<string>();
+
+            foreach (DataGridViewColumn coll in dgv.Columns)
+            {
+                headers.Add(coll.HeaderText);
+            }
+
+            return headers;
+        }
+
+        /// <summary>
+        /// Оброботка изменения выбора Покупатель/Продавец
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshDGV(filterFClients.filterList, clientDataGrid, comboBox2.SelectedItem.ToString());
+        }
+
+        /// <summary>
+        /// Устоновить колонку в виде списка для комбобокс
+        /// </summary>
+        /// <param name="cb"></param>
+        /// <param name="table_name"></param>
+        /// <param name="colom_name"></param>
+
+        #endregion
+
+        public static void BindDataCB(ComboBox cb, String table_name, String colom_name)
+        {
+            DataTable dt = null;
+
+            cb.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cb.AutoCompleteSource = AutoCompleteSource.ListItems;
+
+            dt = SQLQuery(String.Format("select {0} from {1}", colom_name, table_name), null);
+            cb.DataSource = dt;
+            cb.DisplayMember = colom_name;
+
+        }
+
+        /// <summary>
+        /// Создание списка из колонки
+        /// </summary>
+        /// <param name="table_name"></param>
+        /// <param name="colom_name"></param>
+        /// <returns></returns>
+
+        public static List<object> GenerateListFromColum(String table_name, String colom_name)
+        {
+            List<object> list = new List<object>();
+
+            using (DataTable dt = SQLQuery(String.Format("select {0} from {1}", colom_name, table_name), null))
+                {
+
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        list.Add(item.ItemArray[0]);
+                    }
+                }
+            ;
+            return list;
+
+        }
+
+
+        #region SQL Querry
 
         public static void SQLExecuteNonQuery(string command, Dictionary<string, object> sqlparam)
         {
@@ -154,10 +262,17 @@ namespace WindowsFormsApplication1
                         cmd.ExecuteNonQuery();
                         connection.Close();
                     }
-                }catch (SqlException)
+                }
+                catch (SqlException)
+                {
+                    if (MessageBox.Show("Error to Connect to SQL Serever", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
                     {
-                        MessageBox.Show("Error to Connect to SQL Serever", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Process.GetCurrentProcess().Kill();
                     }
+                    
+                    //if (MessageBox.Show("Вы уверены, что хотите выйти?", Application.ProductName, MessageBoxButtons.YesNo) != DialogResult.No)
+                    //
+                }
             }
         }
 
@@ -187,12 +302,18 @@ namespace WindowsFormsApplication1
                 }
                 catch (SqlException)
                 {
-                    MessageBox.Show("Error to Connect to SQL Serever", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (MessageBox.Show("Error to Connect to SQL Serever", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
+                    {
+                        Process.GetCurrentProcess().Kill();
+                    }
                     return new DataTable();
                 }
             }
         }
 
+        #endregion
+
+        #region Filter Buttons
         void buttonSellsFilter_Click(object sender, EventArgs e)
         {
             filterFSells.Visible = true;
@@ -207,78 +328,16 @@ namespace WindowsFormsApplication1
         {
             filterFClients.Visible = true;
         }
+        #endregion
 
-        private void TabIndexChanced(object sender, EventArgs e)
-        {
-            TabControl tc = (TabControl)sender;
-            string s = tc.SelectedTab.Text;
-            switch (s)
-            {
-                case "Клиенты":
-                    RefreshDGV(null, clientDataGrid, comboBox2.SelectedItem.ToString());
-                    break;
-                case "Товары":
-                    RefreshDGV(null, goodsDataGrid, null);
-                    myMhetod();
-                    break;
-                case "Сделки":
-                    RefreshDGV(null, sellsDataGrid, null);
-                    break;
-                case "Отчеты":
-                    BindDataCB(comboBoxOtchetByName, "Imp", "name");
-                    break;
-                default:
-                    break;
-            }
-        }
+        #region Обновление таблиц
 
-        private List<String> GetHeaders(DataGridView dgv)
-        {
-            List<string> headers = new List<string>();
-
-            foreach (DataGridViewColumn coll in dgv.Columns)
-            {
-                headers.Add(coll.HeaderText);
-            }
-
-            return headers;
-        }
-
-        void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            RefreshDGV(filterFClients.filterList, clientDataGrid, comboBox2.SelectedItem.ToString());
-        }
-
-        public static void BindDataCB(ComboBox cb, String table_name, String colom_name)
-        {
-            DataTable dt = null;
-
-            cb.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            cb.AutoCompleteSource = AutoCompleteSource.ListItems;
-
-            dt = SQLQuery(String.Format("select {0} from {1}", colom_name, table_name), null);
-            cb.DataSource = dt;
-            cb.DisplayMember = colom_name;
-
-        }
-
-        public static List<object> GenerateListFromColum(String table_name, String colom_name)
-        {
-            List<object> list = new List<object>();
-
-            using (DataTable dt = SQLQuery(String.Format("select {0} from {1}", colom_name, table_name), null))
-                {
-
-                    foreach (DataRow item in dt.Rows)
-                    {
-                        list.Add(item.ItemArray[0]);
-                    }
-                }
-            ;
-            return list;
-
-        }
-
+        /// <summary>
+        /// Выбр операнда в зависимости от типа переданых даных
+        /// </summary>
+        /// <param name="filter_item"></param>
+        /// <returns></returns>
+        
         private static string getOper(Filters.FiltersValls filter_item)
         {
             string oper = "";
@@ -305,6 +364,14 @@ namespace WindowsFormsApplication1
             return oper;
         }
 
+        /// <summary>
+        /// Создание строки запроса
+        /// </summary>
+        /// <param name="filter_item"></param>
+        /// <param name="filter_string"></param>
+        /// <param name="oper"></param>
+        /// <returns></returns>
+
         private static string CreateString(Filters.FiltersValls filter_item, string filter_string,string oper)
         {
             filter_string += " [" + filter_item.coll + "] ";
@@ -320,6 +387,13 @@ namespace WindowsFormsApplication1
 
             return filter_string;
         }
+
+        /// <summary>
+        /// Обновление таблиц
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="dg"></param>
+        /// <param name="type"></param>
 
         public static void RefreshDGV(List<Filters.FiltersValls> filter, MyDataGrid dg,String type)
         {
@@ -374,24 +448,9 @@ namespace WindowsFormsApplication1
             dg.dataGrid.DataSource = dt;
         }
 
-        /// <summary>
-        /// Удалить выбраную строку
-        /// </summary>
-        /// <param name="dg"></param>
+        #endregion
 
-        private void DeleteDG(MyDataGrid dg)
-        {
-            if (MessageBox.Show("Do you want to delete this row ?", "Delete", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                dg.dataGrid.Rows.RemoveAt(dg.dataGrid.SelectedRows[0].Index);
-                dg.adapter.Update(dg.table);
-            }
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            RefreshDGV(filterFClients.filterList, clientDataGrid, comboBox2.SelectedItem.ToString());
-        }
+        #region Clients
 
         /// <summary>
         /// Кнопка добовления зариси в таблтцу Clients
@@ -407,6 +466,49 @@ namespace WindowsFormsApplication1
         }
 
         /// <summary>
+        /// Обработка изменения выделения в таблице Клиенты
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        private void dataGridViewClients_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridView dg = (DataGridView)sender;
+            int index_row = 1;
+            DataTable dt;
+
+            try
+            {
+                index_row = dg.SelectedRows[0].Index;
+            }
+
+            catch (IndexOutOfRangeException) { return; }
+            catch (ArgumentOutOfRangeException) { return; }
+
+            company_id = (int)dg.Rows[index_row].Cells["UID"].Value;
+
+            dt = SQLQuery("Select name,Phone From Predst where [Company _ID] = @id", new Dictionary<string, object> { { "@id", company_id } });
+            dataGridViewPreds.DataSource = dt;
+        }
+
+        /// <summary>
+        /// Обработка нажития на кнопку добавить
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        private void buttonPredAdd_Click(object sender, EventArgs e)
+        {
+            Form predAdd = new PredsAdd(company_id);
+            predAdd.ShowDialog();
+            dataGridViewPreds.DataSource = SQLQuery("Select name,Phone From Predst where [Company _ID] = @id", new Dictionary<string, object> { { "@id", company_id } });
+
+        }
+
+        #endregion
+
+        #region Goods
+        /// <summary>
         /// Кнопка добовления зариси в таблтцу Goods
         /// </summary>
         /// <param name="sender"></param>
@@ -420,9 +522,57 @@ namespace WindowsFormsApplication1
             myMhetod();
         }
 
+        /// <summary>
+        /// Проверка последней продажи товаров если >2недель вывод в таблицу
+        /// </summary>
 
+        private void myMhetod()
+        {
 
-        /////////////////////////////////////////////Tab5///////////////////////////////////////////////////////////
+            DataTable dt = goodsDataGrid.table;
+            IEnumerable<DataRow> query =
+                from tbl in dt.AsEnumerable()
+                where tbl.Field<DateTime>("Last") <= DateTime.Now.AddDays(-14)
+                select tbl;
+            if (query.Count() > 0)
+            {
+                if (oldGoodGrid == null)
+                {
+                    oldGoodGrid = new DataGridView();
+                    oldGoodGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                    | System.Windows.Forms.AnchorStyles.Left)
+                    | System.Windows.Forms.AnchorStyles.Right)));
+
+                    oldGoodGrid.AllowUserToAddRows = false;
+                    oldGoodGrid.RowHeadersVisible = false;
+                    oldGoodGrid.ReadOnly = true;
+                    oldGoodGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                    dataGridViewGoods.Location = new System.Drawing.Point(3, 150);
+                    dataGridViewGoods.Size = new System.Drawing.Size(760, 360);
+                    oldGoodGrid.Location = new System.Drawing.Point(3, 35);
+                    oldGoodGrid.Size = new System.Drawing.Size(760, 100);
+                    this.tabPageGoods.Controls.Add(oldGoodGrid);
+                }
+                oldGoodGrid.DataSource = query.CopyToDataTable<DataRow>();
+            }
+            else
+            {
+                this.Controls.Remove(oldGoodGrid);
+                oldGoodGrid = null;
+                dataGridViewGoods.Location = new System.Drawing.Point(3, 35);
+                dataGridViewGoods.Size = new System.Drawing.Size(760, 475);
+            }
+
+        }
+
+        #endregion
+
+        #region Sells
+        /// <summary>
+        /// Кнапка добавить вкладка сделки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 
         private void buttonAdd_Sells_Click(object sender, EventArgs e)
         {
@@ -465,6 +615,12 @@ namespace WindowsFormsApplication1
             RefreshDGV(null, sellsDataGrid, null);
         }
 
+        /// <summary>
+        /// Кнопка посмотреть вкладка сделки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
         private void button4_Click_1(object sender, EventArgs e)
         {
 
@@ -479,10 +635,9 @@ namespace WindowsFormsApplication1
             RefreshDGV(null, sellsDataGrid, null);
         }
 
+        #endregion
 
-        
-        //////////////////////////////////////////////////Tab Imp///////////////////////////////////////////////////
-
+        #region Сотрудники
 
         private void buttonImpAdd_Click(object sender, EventArgs e)
         {
@@ -491,94 +646,51 @@ namespace WindowsFormsApplication1
             RefreshDGV(null, impDataGrid, null);
         }
 
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-        private void dataGridViewClients_SelectionChanged(object sender, EventArgs e)
-        {
-            DataGridView dg = (DataGridView)sender;
-            int index_row = 1;
-            DataTable dt;
-
-            try
-            {
-                index_row = dg.SelectedRows[0].Index;
-            }
-
-            catch (IndexOutOfRangeException) { return; }
-            catch (ArgumentOutOfRangeException) { return; }
-
-            company_id = (int)dg.Rows[index_row].Cells["UID"].Value;
-
-            dt = SQLQuery("Select name,Phone From Predst where [Company _ID] = @id", new Dictionary<string, object> { { "@id", company_id } });
-            dataGridViewPreds.DataSource = dt;
-        }
-
-        private void buttonPredAdd_Click(object sender, EventArgs e)
-        {
-            Form predAdd = new PredsAdd(company_id);
-            predAdd.ShowDialog();
-            dataGridViewPreds.DataSource = SQLQuery("Select name,Phone From Predst where [Company _ID] = @id", new Dictionary<string, object> { { "@id", company_id } });
-            
-        }
-
-
-        private void myMhetod()
-        {
-            
-            DataTable dt = goodsDataGrid.table;
-            IEnumerable<DataRow> query =
-                from tbl in dt.AsEnumerable()
-                where tbl.Field<DateTime>("Last") <= DateTime.Now.AddDays(-14)
-                select tbl;
-            if (query.Count() > 0)
-            {
-                if (oldGoodGrid == null)
-                {
-                    oldGoodGrid = new DataGridView();
-                    oldGoodGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                    | System.Windows.Forms.AnchorStyles.Left)
-                    | System.Windows.Forms.AnchorStyles.Right)));
-
-                    oldGoodGrid.AllowUserToAddRows = false;
-                    oldGoodGrid.RowHeadersVisible = false;
-                    oldGoodGrid.ReadOnly = true;
-                    oldGoodGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                    dataGridViewGoods.Location = new System.Drawing.Point(3, 150);
-                    dataGridViewGoods.Size = new System.Drawing.Size(760, 360);
-                    oldGoodGrid.Location = new System.Drawing.Point(3, 35);
-                    oldGoodGrid.Size = new System.Drawing.Size(760, 100);
-                    this.tabPageGoods.Controls.Add(oldGoodGrid);
-                }
-                oldGoodGrid.DataSource = query.CopyToDataTable<DataRow>();
-            }
-            else
-            {
-                this.Controls.Remove(oldGoodGrid);
-                oldGoodGrid = null;
-                dataGridViewGoods.Location = new System.Drawing.Point(3, 35);
-                dataGridViewGoods.Size = new System.Drawing.Size(760, 475);
-            }
-            
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            Form otchet = new Otchet();
-            otchet.ShowDialog();
-        }
-
-
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        #endregion
 
         #region OtchetTab
+
+        /// <summary>
+        /// Обработка смены вкладки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        private void OtchetTab_Changed(object sender, EventArgs e)
+        {
+            TabControl tc = (TabControl)sender;
+            string s = (string)tc.SelectedTab.Tag;
+            switch (s)
+            {
+                case "Tab1":
+                    BindDataCB(comboBoxOtchetByName, "Imp", "name");
+                    break;
+                case "Tab2":
+                    break;
+                case "Tab3":
+                    //GenerateChart();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        #region Zaperiud
+        /// <summary>
+        /// Кнопка обновить
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 
         private void buttonMakeDataGrid_Click(object sender, EventArgs e)
         {
             dataGridViewOthetByTimeAndName.DataSource = GetDataTableOtchet();
         }
+
+        /// <summary>
+        /// Создание тоблицы с продажами за определёний периуд
+        /// </summary>
+        /// <returns></returns>
 
         private DataTable GetDataTableOtchet()
         {
@@ -596,6 +708,11 @@ namespace WindowsFormsApplication1
                 new Dictionary<string, object> { { "@day1", day_1 }, { "@day2", day_2 } }
                 );
         }
+
+        /// <summary>
+        /// Подсчет суммы продаж за указаный периуд
+        /// </summary>
+        /// <returns></returns>
 
         private decimal GetSumOtchet()
         {
@@ -615,6 +732,12 @@ namespace WindowsFormsApplication1
             return (decimal)dt.Rows[0].ItemArray[0];
         }
 
+        /// <summary>
+        /// Кнопка в ворд
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
         private void button5_Click_1(object sender, EventArgs e)
         {
             string s = "";
@@ -631,24 +754,14 @@ namespace WindowsFormsApplication1
 
         }
 
-
-
-
         #endregion
 
-        /*
-        private DataTable GetDataTableOtchetMonth( DateTime date)
-        {
-            var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
-            var lastDayOfMonth = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
-
-            return Form1.SQLQuery(
-                String.Format("SELECT ClientName,Type,day,SUM FROM {0} WHERE (day >= @day1 AND day <= @day2 and Active = 'true');", "Sells"),
-                new Dictionary<string, object> { { "@day1", firstDayOfMonth }, { "@day2", lastDayOfMonth } }
-                );
-        }
-
-        */
+        #region ЗаМесяц
+        /// <summary>
+        /// Подсчет расходов за определеныйе месяц
+        /// </summary>
+        /// <param name="date">Месяц</param>
+        /// <returns></returns>
 
         private decimal GetSumOtchetMonth(DateTime date)
         {
@@ -707,7 +820,7 @@ namespace WindowsFormsApplication1
         }
 
         /// <summary>
-        /// Отчет по Месецам обновить таблицу
+        /// Отчет по Месецам обновить строку
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -719,50 +832,14 @@ namespace WindowsFormsApplication1
 
         }
 
-        /*
+        #endregion
+
+        #region По производителю
 
         /// <summary>
-        /// Отчет по Месецам в Ворд
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            DateTime date = dateTimePickerMontOnly.Value;
-
-            Dictionary<string, object> d = new Dictionary<string, object> { { "DATA1", String.Format("за {0}",dateTimePicker1.Value.ToString("MMMM")) },
-            { "DATA2", "" },
-            {"WHO", ""},
-            {"SUM",String.Format("Сумма: {0}",GetSumOtchetMonth(date))}
-            };
-            new NewWord().MakeWordDoc("\\temp_otchet.dotx", GetDataTableOtchetMonth(date), d);
-            
-        }
-          
-        */
-
-
-        private void OtchetTab_Changed(object sender, EventArgs e)
-        {
-            TabControl tc = (TabControl)sender;
-            string s = (string)tc.SelectedTab.Tag;
-            switch (s)
-            {
-                case "Tab1":
-                    BindDataCB(comboBoxOtchetByName,"Imp","name");
-                    break;
-                case "Tab2":
-                    break;
-                case "Tab3":
-                    //GenerateChart();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-       
+       /// Метод для получения списка производителей
+       /// </summary>
+       /// <returns></returns>
 
         private List<string> GetListOfProiz()
         {
@@ -775,6 +852,12 @@ namespace WindowsFormsApplication1
             return s;
             //cb.DisplayMember = colom_name;
         }
+
+        /// <summary>
+        /// Создание тоблицы для отчета по производителям
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
 
         private DataTable GetTableForProizOtchet(DateTime date)
         {
@@ -805,17 +888,36 @@ namespace WindowsFormsApplication1
             
         }
 
+        /// <summary>
+        /// Кнопка отчет по производителям
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
         private void button10_Click(object sender, EventArgs e)
         {
             DateTime date = dateTimePicker3.Value;
             dataGridViewOtchetProiz.DataSource = GetTableForProizOtchet(date);
         }
 
+        #endregion
+
+        #region Гистограмы
+        /// <summary>
+        /// Кномка по производителям на вкладке гистограмы
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
         private void button6_Click(object sender, EventArgs e)
         {
             
             GenerateChart();
         }
+
+        /// <summary>
+        /// Метлд создания гистограмы по производителям
+        /// </summary>
 
         private void GenerateChart()
         {
@@ -834,13 +936,6 @@ namespace WindowsFormsApplication1
             chart1.ChartAreas["ChartArea1"].AxisX.Interval = 1;
 
             chart1.ChartAreas["ChartArea1"].AxisX.IsMarginVisible = false;
-
-            /*
-            foreach (var series in chart1.Series)
-            {
-                series.Points.Clear();
-            }
-            */
 
             List<String> names = DateTimeFormatInfo.CurrentInfo.MonthNames.ToList();
             names.RemoveAt(12);
@@ -871,6 +966,11 @@ namespace WindowsFormsApplication1
                 date = date.AddMonths(1);
             }
         }
+
+
+        /// <summary>
+        /// Метод создания гисторграмы доходы
+        /// </summary>
 
         private void GenerateChart2()
         {
@@ -911,11 +1011,20 @@ namespace WindowsFormsApplication1
 
         }
 
+        /// <summary>
+        /// кнопка даходы в вкладке гисторграмы
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// 
         private void button11_Click(object sender, EventArgs e)
         {
             GenerateChart2();
         }
 
+        #endregion
+
+        #endregion
 
 
 

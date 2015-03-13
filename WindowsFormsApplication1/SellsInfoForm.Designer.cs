@@ -54,41 +54,41 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 77);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 68);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(782, 276);
+            this.dataGridView1.Size = new System.Drawing.Size(782, 285);
             this.dataGridView1.TabIndex = 1;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(321, 12);
+            this.textBox1.Location = new System.Drawing.Point(241, 12);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 2;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 39);
+            this.button1.Location = new System.Drawing.Point(347, 11);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 3;
-            this.button1.Text = "button1";
+            this.button1.Text = "Добавить";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(719, 39);
+            this.button2.Location = new System.Drawing.Point(719, 12);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 4;
-            this.button2.Text = "button2";
+            this.button2.Text = "Назад";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(235, 48);
+            this.button3.Location = new System.Drawing.Point(12, 39);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(103, 23);
             this.button3.TabIndex = 5;
@@ -126,7 +126,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(458, 16);
+            this.checkBox1.Location = new System.Drawing.Point(657, 15);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(56, 17);
             this.checkBox1.TabIndex = 10;
@@ -136,7 +136,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(431, 49);
+            this.button4.Location = new System.Drawing.Point(121, 39);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(103, 23);
             this.button4.TabIndex = 11;
@@ -147,7 +147,7 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(540, 53);
+            this.checkBox2.Location = new System.Drawing.Point(230, 45);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(76, 17);
             this.checkBox2.TabIndex = 12;

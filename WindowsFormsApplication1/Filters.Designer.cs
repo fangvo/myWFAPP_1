@@ -67,12 +67,12 @@
             // 
             // buttonAplay
             // 
-            this.buttonAplay.Location = new System.Drawing.Point(471, 92);
+            this.buttonAplay.Location = new System.Drawing.Point(460, 68);
             this.buttonAplay.Name = "buttonAplay";
             this.buttonAplay.Size = new System.Drawing.Size(75, 23);
             this.buttonAplay.TabIndex = 102;
             this.buttonAplay.Tag = "aplay";
-            this.buttonAplay.Text = "Applay";
+            this.buttonAplay.Text = "Пременить";
             this.buttonAplay.UseVisualStyleBackColor = true;
             // 
             // buttonSbros

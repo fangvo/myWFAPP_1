@@ -73,12 +73,6 @@
     </Compile>
     <Compile Include="MyData.cs" />
     <Compile Include="NewWord.cs" />
-    <Compile Include="Otchet.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Otchet.Designer.cs">
-      <DependentUpon>Otchet.cs</DependentUpon>
-    </Compile>
     <Compile Include="PredsAdd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,9 +110,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Otchet.resx">
-      <DependentUpon>Otchet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PredsAdd.resx">
       <DependentUpon>PredsAdd.cs</DependentUpon>

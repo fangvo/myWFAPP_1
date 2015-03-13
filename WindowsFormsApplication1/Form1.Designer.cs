@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabHost = new System.Windows.Forms.TabControl();
             this.tabPageClients = new System.Windows.Forms.TabPage();
             this.buttonPredAdd = new System.Windows.Forms.Button();
@@ -41,15 +41,12 @@
             this.buttonCientFilter = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.dataGridViewClients = new System.Windows.Forms.DataGridView();
-            this.button8 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.tabPageGoods = new System.Windows.Forms.TabPage();
             this.buttonGoodsFilters = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.dataGridViewGoods = new System.Windows.Forms.DataGridView();
             this.buttonAdd_Goods = new System.Windows.Forms.Button();
             this.tabPageSells = new System.Windows.Forms.TabPage();
-            this.buttonOtchet = new System.Windows.Forms.Button();
             this.buttonSellsFilter = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.buttonAdd_Sells = new System.Windows.Forms.Button();
@@ -62,27 +59,26 @@
             this.tabPageOtchet = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBoxArenda = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button7 = new System.Windows.Forms.Button();
+            this.dateTimePickerMontOnly = new System.Windows.Forms.DateTimePicker();
+            this.button5 = new System.Windows.Forms.Button();
+            this.comboBoxOtchetByName = new System.Windows.Forms.ComboBox();
+            this.dataGridViewOthetByTimeAndName = new System.Windows.Forms.DataGridView();
+            this.buttonMakeDataGrid = new System.Windows.Forms.Button();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.dataGridViewOtchetProiz = new System.Windows.Forms.DataGridView();
-            this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.button11 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.dateTimePickerMontOnly = new System.Windows.Forms.DateTimePicker();
-            this.button7 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBoxArenda = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.buttonMakeDataGrid = new System.Windows.Forms.Button();
-            this.dataGridViewOthetByTimeAndName = new System.Windows.Forms.DataGridView();
-            this.comboBoxOtchetByName = new System.Windows.Forms.ComboBox();
-            this.button5 = new System.Windows.Forms.Button();
             this.tabHost.SuspendLayout();
             this.tabPageClients.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPreds)).BeginInit();
@@ -96,11 +92,11 @@
             this.tabPageOtchet.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOthetByTimeAndName)).BeginInit();
             this.tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOtchetProiz)).BeginInit();
             this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOthetByTimeAndName)).BeginInit();
             this.SuspendLayout();
             // 
             // tabHost
@@ -128,7 +124,6 @@
             this.tabPageClients.Controls.Add(this.buttonCientFilter);
             this.tabPageClients.Controls.Add(this.comboBox2);
             this.tabPageClients.Controls.Add(this.dataGridViewClients);
-            this.tabPageClients.Controls.Add(this.button8);
             this.tabPageClients.Controls.Add(this.button2);
             this.tabPageClients.Location = new System.Drawing.Point(4, 22);
             this.tabPageClients.Name = "tabPageClients";
@@ -171,11 +166,11 @@
             // 
             // buttonCientFilter
             // 
-            this.buttonCientFilter.Location = new System.Drawing.Point(106, 8);
+            this.buttonCientFilter.Location = new System.Drawing.Point(106, 7);
             this.buttonCientFilter.Name = "buttonCientFilter";
-            this.buttonCientFilter.Size = new System.Drawing.Size(75, 23);
+            this.buttonCientFilter.Size = new System.Drawing.Size(75, 20);
             this.buttonCientFilter.TabIndex = 12;
-            this.buttonCientFilter.Text = "Filters";
+            this.buttonCientFilter.Text = "Фильтр";
             this.buttonCientFilter.UseVisualStyleBackColor = true;
             // 
             // comboBox2
@@ -202,21 +197,11 @@
             this.dataGridViewClients.Size = new System.Drawing.Size(760, 364);
             this.dataGridViewClients.TabIndex = 10;
             // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(478, 6);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 23);
-            this.button8.TabIndex = 9;
-            this.button8.Text = "Refresh";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(25, 7);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 22);
+            this.button2.Size = new System.Drawing.Size(75, 20);
             this.button2.TabIndex = 4;
             this.button2.Text = "Добавить";
             this.button2.UseVisualStyleBackColor = true;
@@ -225,7 +210,6 @@
             // tabPageGoods
             // 
             this.tabPageGoods.Controls.Add(this.buttonGoodsFilters);
-            this.tabPageGoods.Controls.Add(this.button3);
             this.tabPageGoods.Controls.Add(this.dataGridViewGoods);
             this.tabPageGoods.Controls.Add(this.buttonAdd_Goods);
             this.tabPageGoods.Location = new System.Drawing.Point(4, 22);
@@ -238,21 +222,12 @@
             // 
             // buttonGoodsFilters
             // 
-            this.buttonGoodsFilters.Location = new System.Drawing.Point(649, 7);
+            this.buttonGoodsFilters.Location = new System.Drawing.Point(99, 6);
             this.buttonGoodsFilters.Name = "buttonGoodsFilters";
-            this.buttonGoodsFilters.Size = new System.Drawing.Size(75, 23);
+            this.buttonGoodsFilters.Size = new System.Drawing.Size(75, 20);
             this.buttonGoodsFilters.TabIndex = 14;
-            this.buttonGoodsFilters.Text = "Filters";
+            this.buttonGoodsFilters.Text = "Фильтр";
             this.buttonGoodsFilters.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(493, 7);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 13;
-            this.button3.Text = "Refresh";
-            this.button3.UseVisualStyleBackColor = true;
             // 
             // dataGridViewGoods
             // 
@@ -270,7 +245,7 @@
             // 
             this.buttonAdd_Goods.Location = new System.Drawing.Point(18, 6);
             this.buttonAdd_Goods.Name = "buttonAdd_Goods";
-            this.buttonAdd_Goods.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdd_Goods.Size = new System.Drawing.Size(75, 20);
             this.buttonAdd_Goods.TabIndex = 0;
             this.buttonAdd_Goods.Text = "Добавить";
             this.buttonAdd_Goods.UseVisualStyleBackColor = true;
@@ -278,7 +253,6 @@
             // 
             // tabPageSells
             // 
-            this.tabPageSells.Controls.Add(this.buttonOtchet);
             this.tabPageSells.Controls.Add(this.buttonSellsFilter);
             this.tabPageSells.Controls.Add(this.button4);
             this.tabPageSells.Controls.Add(this.buttonAdd_Sells);
@@ -292,29 +266,20 @@
             this.tabPageSells.Text = "Сделки";
             this.tabPageSells.UseVisualStyleBackColor = true;
             // 
-            // buttonOtchet
-            // 
-            this.buttonOtchet.Location = new System.Drawing.Point(688, 46);
-            this.buttonOtchet.Name = "buttonOtchet";
-            this.buttonOtchet.Size = new System.Drawing.Size(75, 23);
-            this.buttonOtchet.TabIndex = 8;
-            this.buttonOtchet.Text = "Отчеты";
-            this.buttonOtchet.UseVisualStyleBackColor = true;
-            // 
             // buttonSellsFilter
             // 
-            this.buttonSellsFilter.Location = new System.Drawing.Point(134, 46);
+            this.buttonSellsFilter.Location = new System.Drawing.Point(657, 11);
             this.buttonSellsFilter.Name = "buttonSellsFilter";
-            this.buttonSellsFilter.Size = new System.Drawing.Size(75, 23);
+            this.buttonSellsFilter.Size = new System.Drawing.Size(75, 20);
             this.buttonSellsFilter.TabIndex = 7;
-            this.buttonSellsFilter.Text = "Filters";
+            this.buttonSellsFilter.Text = "Фильтр";
             this.buttonSellsFilter.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(14, 46);
+            this.button4.Location = new System.Drawing.Point(540, 11);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.Size = new System.Drawing.Size(75, 20);
             this.button4.TabIndex = 6;
             this.button4.Text = "Посмотреть";
             this.button4.UseVisualStyleBackColor = true;
@@ -322,9 +287,9 @@
             // 
             // buttonAdd_Sells
             // 
-            this.buttonAdd_Sells.Location = new System.Drawing.Point(415, 10);
+            this.buttonAdd_Sells.Location = new System.Drawing.Point(425, 11);
             this.buttonAdd_Sells.Name = "buttonAdd_Sells";
-            this.buttonAdd_Sells.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdd_Sells.Size = new System.Drawing.Size(75, 20);
             this.buttonAdd_Sells.TabIndex = 5;
             this.buttonAdd_Sells.Text = "Добавить";
             this.buttonAdd_Sells.UseVisualStyleBackColor = true;
@@ -333,10 +298,10 @@
             // dataGridSells
             // 
             this.dataGridSells.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridSells.Location = new System.Drawing.Point(3, 75);
+            this.dataGridSells.Location = new System.Drawing.Point(3, 37);
             this.dataGridSells.Name = "dataGridSells";
             this.dataGridSells.RowHeadersVisible = false;
-            this.dataGridSells.Size = new System.Drawing.Size(760, 435);
+            this.dataGridSells.Size = new System.Drawing.Size(760, 473);
             this.dataGridSells.TabIndex = 4;
             // 
             // comboBox3
@@ -382,9 +347,9 @@
             // dataGridImp
             // 
             this.dataGridImp.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridImp.Location = new System.Drawing.Point(3, 70);
+            this.dataGridImp.Location = new System.Drawing.Point(3, 32);
             this.dataGridImp.Name = "dataGridImp";
-            this.dataGridImp.Size = new System.Drawing.Size(760, 440);
+            this.dataGridImp.Size = new System.Drawing.Size(760, 478);
             this.dataGridImp.TabIndex = 0;
             // 
             // tabPageOtchet
@@ -434,10 +399,113 @@
             this.tabPage4.Text = "Отчет по дням";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(81, 421);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(10, 13);
+            this.label4.TabIndex = 27;
+            this.label4.Text = " ";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 421);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(69, 13);
+            this.label3.TabIndex = 26;
+            this.label3.Text = "Расходы за ";
+            // 
+            // textBoxArenda
+            // 
+            this.textBoxArenda.Location = new System.Drawing.Point(265, 399);
+            this.textBoxArenda.Name = "textBoxArenda";
+            this.textBoxArenda.Size = new System.Drawing.Size(150, 20);
+            this.textBoxArenda.TabIndex = 25;
+            this.textBoxArenda.Text = "50000";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(212, 402);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(44, 13);
+            this.label2.TabIndex = 24;
+            this.label2.Text = "Аренда";
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(433, 400);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 20);
+            this.button7.TabIndex = 22;
+            this.button7.Text = "Обновить";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // dateTimePickerMontOnly
+            // 
+            this.dateTimePickerMontOnly.CustomFormat = "MMMM";
+            this.dateTimePickerMontOnly.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerMontOnly.Location = new System.Drawing.Point(6, 398);
+            this.dateTimePickerMontOnly.Name = "dateTimePickerMontOnly";
+            this.dateTimePickerMontOnly.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePickerMontOnly.TabIndex = 21;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(512, 7);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 20);
+            this.button5.TabIndex = 15;
+            this.button5.Text = "В Word";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click_1);
+            // 
+            // comboBoxOtchetByName
+            // 
+            this.comboBoxOtchetByName.FormattingEnabled = true;
+            this.comboBoxOtchetByName.Location = new System.Drawing.Point(6, 36);
+            this.comboBoxOtchetByName.Name = "comboBoxOtchetByName";
+            this.comboBoxOtchetByName.Size = new System.Drawing.Size(150, 21);
+            this.comboBoxOtchetByName.TabIndex = 14;
+            // 
+            // dataGridViewOthetByTimeAndName
+            // 
+            this.dataGridViewOthetByTimeAndName.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewOthetByTimeAndName.Location = new System.Drawing.Point(6, 63);
+            this.dataGridViewOthetByTimeAndName.Name = "dataGridViewOthetByTimeAndName";
+            this.dataGridViewOthetByTimeAndName.Size = new System.Drawing.Size(747, 302);
+            this.dataGridViewOthetByTimeAndName.TabIndex = 13;
+            // 
+            // buttonMakeDataGrid
+            // 
+            this.buttonMakeDataGrid.Location = new System.Drawing.Point(431, 7);
+            this.buttonMakeDataGrid.Name = "buttonMakeDataGrid";
+            this.buttonMakeDataGrid.Size = new System.Drawing.Size(75, 20);
+            this.buttonMakeDataGrid.TabIndex = 12;
+            this.buttonMakeDataGrid.Text = "Обновить";
+            this.buttonMakeDataGrid.UseVisualStyleBackColor = true;
+            this.buttonMakeDataGrid.Click += new System.EventHandler(this.buttonMakeDataGrid_Click);
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Location = new System.Drawing.Point(225, 7);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker2.TabIndex = 11;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(6, 7);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker1.TabIndex = 10;
+            // 
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.dataGridViewOtchetProiz);
-            this.tabPage6.Controls.Add(this.button9);
             this.tabPage6.Controls.Add(this.button10);
             this.tabPage6.Controls.Add(this.dateTimePicker3);
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
@@ -463,18 +531,9 @@
             this.dataGridViewOtchetProiz.StandardTab = true;
             this.dataGridViewOtchetProiz.TabIndex = 22;
             // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(490, 10);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(75, 20);
-            this.button9.TabIndex = 21;
-            this.button9.Text = "В Word";
-            this.button9.UseVisualStyleBackColor = true;
-            // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(409, 10);
+            this.button10.Location = new System.Drawing.Point(236, 8);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(75, 20);
             this.button10.TabIndex = 20;
@@ -526,151 +585,47 @@
             // 
             // chart1
             // 
-            chartArea1.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
-            chartArea1.AxisX.IsMarginVisible = false;
-            chartArea1.AxisX.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea1.AxisX.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea1.AxisX.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
-            chartArea1.AxisX.MinorTickMark.IntervalOffset = double.NaN;
-            chartArea1.AxisX.ScaleView.Zoomable = false;
-            chartArea1.AxisY.MajorGrid.Interval = 50000D;
-            chartArea1.AxisY.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
-            chartArea1.AxisY.MajorTickMark.Interval = 0D;
-            chartArea1.AxisY.MinorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.NotSet;
-            chartArea1.AxisY.ScaleBreakStyle.BreakLineStyle = System.Windows.Forms.DataVisualization.Charting.BreakLineStyle.Straight;
-            chartArea1.AxisY.ScaleBreakStyle.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.DashDot;
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
+            chartArea3.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea3.AxisX.IsMarginVisible = false;
+            chartArea3.AxisX.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisX.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisX.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
+            chartArea3.AxisX.MinorTickMark.IntervalOffset = double.NaN;
+            chartArea3.AxisX.ScaleView.Zoomable = false;
+            chartArea3.AxisY.MajorGrid.Interval = 50000D;
+            chartArea3.AxisY.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            chartArea3.AxisY.MajorTickMark.Interval = 0D;
+            chartArea3.AxisY.MinorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.NotSet;
+            chartArea3.AxisY.ScaleBreakStyle.BreakLineStyle = System.Windows.Forms.DataVisualization.Charting.BreakLineStyle.Straight;
+            chartArea3.AxisY.ScaleBreakStyle.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.DashDot;
+            chartArea3.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chart1.Legends.Add(legend3);
             this.chart1.Location = new System.Drawing.Point(3, 30);
             this.chart1.Name = "chart1";
             this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Legend = "Legend1";
-            series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            series1.Name = "Series1";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.Legend = "Legend1";
-            series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            series2.Name = "Series2";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series3.Legend = "Legend1";
-            series3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            series3.Name = "Series3";
-            this.chart1.Series.Add(series1);
-            this.chart1.Series.Add(series2);
-            this.chart1.Series.Add(series3);
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series7.Legend = "Legend1";
+            series7.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series7.Name = "Series1";
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series8.Legend = "Legend1";
+            series8.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series8.Name = "Series2";
+            series9.ChartArea = "ChartArea1";
+            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series9.Legend = "Legend1";
+            series9.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series9.Name = "Series3";
+            this.chart1.Series.Add(series7);
+            this.chart1.Series.Add(series8);
+            this.chart1.Series.Add(series9);
             this.chart1.Size = new System.Drawing.Size(753, 457);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
-            // 
-            // dateTimePickerMontOnly
-            // 
-            this.dateTimePickerMontOnly.CustomFormat = "MMMM";
-            this.dateTimePickerMontOnly.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePickerMontOnly.Location = new System.Drawing.Point(6, 371);
-            this.dateTimePickerMontOnly.Name = "dateTimePickerMontOnly";
-            this.dateTimePickerMontOnly.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePickerMontOnly.TabIndex = 21;
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(421, 377);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 20);
-            this.button7.TabIndex = 22;
-            this.button7.Text = "Обновить";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(215, 377);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 13);
-            this.label2.TabIndex = 24;
-            this.label2.Text = "Аренда";
-            // 
-            // textBoxArenda
-            // 
-            this.textBoxArenda.Location = new System.Drawing.Point(265, 374);
-            this.textBoxArenda.Name = "textBoxArenda";
-            this.textBoxArenda.Size = new System.Drawing.Size(150, 20);
-            this.textBoxArenda.TabIndex = 25;
-            this.textBoxArenda.Text = "50000";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 405);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(69, 13);
-            this.label3.TabIndex = 26;
-            this.label3.Text = "Расходы за ";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(81, 405);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(10, 13);
-            this.label4.TabIndex = 27;
-            this.label4.Text = " ";
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(6, 7);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 10;
-            // 
-            // dateTimePicker2
-            // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(225, 7);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker2.TabIndex = 11;
-            // 
-            // buttonMakeDataGrid
-            // 
-            this.buttonMakeDataGrid.Location = new System.Drawing.Point(449, 7);
-            this.buttonMakeDataGrid.Name = "buttonMakeDataGrid";
-            this.buttonMakeDataGrid.Size = new System.Drawing.Size(75, 20);
-            this.buttonMakeDataGrid.TabIndex = 12;
-            this.buttonMakeDataGrid.Text = "Обновить";
-            this.buttonMakeDataGrid.UseVisualStyleBackColor = true;
-            this.buttonMakeDataGrid.Click += new System.EventHandler(this.buttonMakeDataGrid_Click);
-            // 
-            // dataGridViewOthetByTimeAndName
-            // 
-            this.dataGridViewOthetByTimeAndName.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewOthetByTimeAndName.Location = new System.Drawing.Point(6, 63);
-            this.dataGridViewOthetByTimeAndName.Name = "dataGridViewOthetByTimeAndName";
-            this.dataGridViewOthetByTimeAndName.Size = new System.Drawing.Size(747, 302);
-            this.dataGridViewOthetByTimeAndName.TabIndex = 13;
-            // 
-            // comboBoxOtchetByName
-            // 
-            this.comboBoxOtchetByName.FormattingEnabled = true;
-            this.comboBoxOtchetByName.Location = new System.Drawing.Point(6, 36);
-            this.comboBoxOtchetByName.Name = "comboBoxOtchetByName";
-            this.comboBoxOtchetByName.Size = new System.Drawing.Size(150, 21);
-            this.comboBoxOtchetByName.TabIndex = 14;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(552, 6);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 20);
-            this.button5.TabIndex = 15;
-            this.button5.Text = "В Word";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click_1);
             // 
             // Form1
             // 
@@ -695,11 +650,11 @@
             this.tabControl2.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOthetByTimeAndName)).EndInit();
             this.tabPage6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOtchetProiz)).EndInit();
             this.tabPage7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOthetByTimeAndName)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -728,9 +683,7 @@
         private System.Windows.Forms.TabPage tabPageGoods;
         private System.Windows.Forms.DataGridView dataGridViewGoods;
         private System.Windows.Forms.Button buttonAdd_Goods;
-        private System.Windows.Forms.Button button8;
         private System.Windows.Forms.DataGridView dataGridViewClients;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TabPage tabPageSells;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ComboBox comboBox3;
@@ -744,7 +697,6 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Button buttonImpAdd;
         private System.Windows.Forms.DataGridView dataGridImp;
-        private System.Windows.Forms.Button buttonOtchet;
         private System.Windows.Forms.DataGridView dataGridViewPreds;
         private System.Windows.Forms.Button buttonPredAdd;
         private System.Windows.Forms.Label label1;
@@ -753,7 +705,6 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.DataGridView dataGridViewOtchetProiz;
-        private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.DateTimePicker dateTimePicker3;
         private System.Windows.Forms.TabPage tabPage7;
