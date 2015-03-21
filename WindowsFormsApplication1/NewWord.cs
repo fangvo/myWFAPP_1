@@ -13,6 +13,12 @@ namespace WindowsFormsApplication1
     {
         Word._Application oWord = new Word.Application();
 
+        /// <summary>
+        /// Сохранить документ
+        /// </summary>
+        /// <param name="oDoc"></param>
+        /// <param name="id"></param>
+
         private void SaveDoc(Word.Document oDoc, int id)
         {
             object FileName = String.Format("{0}\\Docs\\Dogovor_{1}.docx", Environment.CurrentDirectory, id);
@@ -22,11 +28,25 @@ namespace WindowsFormsApplication1
             oDoc.SaveAs(ref FileName);
         }
 
+        /// <summary>
+        /// начать делать документ
+        /// </summary>
+        /// <param name="template"></param>
+        /// <param name="table"></param>
+        /// <param name="dict"></param>
+
         public void MakeWordDoc(String template, DataTable table, Dictionary<string,object> dict)
         {
             Word.Document oDoc = GetDoc(Environment.CurrentDirectory + "\\Template" + template, table,dict);
             oWord.Visible = true; 
         }
+
+        /// <summary>
+        /// начать делать документ
+        /// </summary>
+        /// <param name="template"></param>
+        /// <param name="table"></param>
+        /// <param name="dict"></param>
 
         public void MakeWordDoc(String template, Dictionary<string, object> dict,int num,bool show)
         {
@@ -36,10 +56,20 @@ namespace WindowsFormsApplication1
             {
                 oWord.Visible = true;
             }
+            else
             {
                 oWord.Quit();
             }
         }
+
+        
+
+        /// <summary>
+        /// Взять копию шаблона
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="dict"></param>
+        /// <returns></returns>
 
         private Word.Document GetDoc(string path, Dictionary<string, object> dict)
         {
@@ -47,6 +77,13 @@ namespace WindowsFormsApplication1
             SetTemplate(oDoc, dict);
             return oDoc;
         }
+
+        /// <summary>
+        /// Взять копию шаблона
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="dict"></param>
+        /// <returns></returns>
 
         private Word.Document GetDoc(string path, DataTable table, Dictionary<string, object> dict)
         {
@@ -95,6 +132,14 @@ namespace WindowsFormsApplication1
         }
         */
 
+
+        /// <summary>
+        /// Сгенерировать таблицу
+        /// </summary>
+        /// <param name="oDoc"></param>
+        /// <param name="bookmark"></param>
+        /// <param name="table"></param>
+        /// 
         private void CreateTable(Word.Document oDoc, string bookmark, DataTable table)
         {
             Word.Range wdRng = oDoc.Bookmarks[bookmark].Range;
@@ -197,7 +242,87 @@ namespace WindowsFormsApplication1
             stylTbl.RowStripe = 1;
             return styl;
         }
-         
+
+
+
+        public void MakePriceList(Dictionary<String, DataTable> dict,int colsCount)
+        {
+
+            object oEndOfDoc = "\\endofdoc";
+            object oMissing = System.Reflection.Missing.Value;
+
+            Word.Document oDoc = oWord.Documents.Add(Environment.CurrentDirectory + "\\Template\\PriceList.dotx");
+            Word.Range wdRng = oDoc.Bookmarks.get_Item(ref oEndOfDoc).Range;
+            
+            object objDefaultBehaviorWord8 = Word.WdDefaultTableBehavior.wdWord8TableBehavior;
+            object objAutoFitFixed = Word.WdAutoFitBehavior.wdAutoFitFixed;
+            int tblCurRow = 1;
+
+            Word.Table tbl = oDoc.Tables[1];
+            //Word.Table tbl = wdRng.Tables.Add(wdRng, 1, colsCount, ref oMissing, ref oMissing);
+
+
+            tbl.Borders.InsideLineStyle = Microsoft.Office.Interop.Word.WdLineStyle.wdLineStyleSingle;
+            tbl.Borders.OutsideLineStyle = Microsoft.Office.Interop.Word.WdLineStyle.wdLineStyleSingle;
+            tbl.AllowAutoFit = false;
+
+            foreach (KeyValuePair<String,DataTable> item in dict)
+            {
+                DataTable data = item.Value;
+                int startRow = tblCurRow;
+                tbl.Rows.Add();
+                tblCurRow++;
+                Boolean isNextGray = false;
+                
+                // Iterate through the rows. The first row contains 
+                // the column headings, so start with the second row.
+                for (int tblRow = 2; tblRow - 1 <= data.Rows.Count; tblRow++)
+                {
+
+                    tbl.Rows.Add();
+                    tblCurRow++;
+
+                    tbl.Rows[tblCurRow].SetHeight(20, Word.WdRowHeightRule.wdRowHeightAtLeast);
+                    //tbl.Rows[tblCurRow].Shading.BackgroundPatternColor = gray70;
+                    tbl.Rows[tblCurRow].Range.Font.Bold = 0;
+                    if (isNextGray)
+                    {
+                        tbl.Rows[tblCurRow].Shading.BackgroundPatternColor = gray10;
+                        isNextGray = false;
+                    }
+                    else 
+                    {
+                        tbl.Rows[tblCurRow].Shading.BackgroundPatternColor = Word.WdColor.wdColorWhite;
+                        isNextGray = true; 
+                    }
+
+                    // data.Rows is zero-based, so subtract two
+                    // in order to start with the first record.
+                    System.Data.DataRow rw = data.Rows[tblRow - 2];
+                    // Iterate through the columns to get the data.
+                    for (int tblCol = 1; tblCol <= data.Columns.Count; tblCol++)
+                    {
+                        tbl.Cell(startRow + tblRow, tblCol).Range.Text = rw[tblCol - 1].ToString();  
+                    }
+                }
+
+
+                tbl.Cell(startRow + 1, 1).Merge(tbl.Cell(startRow + 1, 6));
+                tbl.Cell(startRow + 1, 1).Range.Text = item.Key;
+
+                tbl.Rows[startRow+1].Shading.BackgroundPatternColor = gray70;
+                tbl.Rows[startRow+1].Range.Font.Bold = 1;
+                tbl.Rows[startRow + 1].Range.Font.ColorIndex = Word.WdColorIndex.wdWhite;
+                tbl.Rows[startRow + 1].SetHeight(15, Word.WdRowHeightRule.wdRowHeightAtLeast);
+
+
+
+            }
+
+            oWord.Visible = true;
+
+        }
+
 
     }
 }

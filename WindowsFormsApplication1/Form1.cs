@@ -41,6 +41,8 @@ namespace WindowsFormsApplication1
 
         #region события формы
 
+        
+
         void Form1_Load(object sender, EventArgs e)
         {
             updateLastVxod(DateTime.Now);
@@ -112,10 +114,22 @@ namespace WindowsFormsApplication1
 
         }
 
+
+        /// <summary>
+        /// Обнавить значение последний выход
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// 
         private void OnClosing(object sender, FormClosingEventArgs e)
         {
                 SQLExecuteNonQuery("update Imp set last_vixod = @date where login = @login", new Dictionary<string, object> { { "@date", DateTime.Now }, { "@login", Properties.Settings.Default.ConID } });
         }
+
+        /// <summary>
+        /// Обновит время входа
+        /// </summary>
+        /// <param name="date"></param>
 
         private void updateLastVxod(DateTime date)
         {
@@ -1024,9 +1038,31 @@ namespace WindowsFormsApplication1
 
         #endregion
 
+        
+
         #endregion
 
+        /// <summary>
+        /// PriceList
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            List<string> proiz = GetListOfProiz();
+            Dictionary<String, DataTable> dict = new Dictionary<string,DataTable>();
+            foreach (String cname in proiz)
+            {
+                
+                DataTable dt = Form1.SQLQuery(String.Format("Select name,chena,kolvo,articyl,cod,ed from Goods where name like '%{0}%' ", cname), null);
+
+                dict.Add(cname,dt);
+            }
+
+            new NewWord().MakePriceList(dict, 6);
+            
+        }
 
     }
 }

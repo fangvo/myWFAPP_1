@@ -38,6 +38,13 @@ namespace WindowsFormsApplication1
 
         }
 
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="_headers"></param>
+        /// <param name="_f"></param>
+        /// <param name="_type"></param>
+
         public Filters(List<String> _headers,object _f,string _type)
         {
             InitializeComponent();
@@ -64,6 +71,12 @@ namespace WindowsFormsApplication1
         {
         }
 
+        /// <summary>
+        /// При смене индекса 1 комбобокс установка названия фильтра
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
         void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox cb = (ComboBox)sender;
@@ -84,6 +97,11 @@ namespace WindowsFormsApplication1
 
         }
 
+        /// <summary>
+        /// При смене индекса 2 комбобокс устоновка типа фильтра
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox cb = (ComboBox)sender;
@@ -91,6 +109,12 @@ namespace WindowsFormsApplication1
             string index = cb.SelectedItem.ToString();
             filterList[cb_id].type = index;
         }
+
+        /// <summary>
+        /// При смене индекса 3 комбобокс устоновка значения фильтра
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 
         void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -102,6 +126,12 @@ namespace WindowsFormsApplication1
             filterList[cb_id].vall = text_cb;
         }
 
+        /// <summary>
+        /// При смене индекса 4 комбобокс добафить "и" или "или"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
         void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox cb = (ComboBox)sender;
@@ -109,6 +139,13 @@ namespace WindowsFormsApplication1
             String text_cb = cb.SelectedItem.ToString();
             filterList[cb_id].param = text_cb;
         }
+
+
+        /// <summary>
+        /// Оьработчик Кнопок
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 
         void button_Click(object sender, EventArgs e)
         {
@@ -140,6 +177,11 @@ namespace WindowsFormsApplication1
             }
         }
 
+
+        /// <summary>
+        /// Удаление Ряда комбобоксов
+        /// </summary>
+
         private void RemoveAllControl()
         {
             foreach (ControlSet cstoRemove in contrSet)
@@ -161,6 +203,10 @@ namespace WindowsFormsApplication1
 
         #region add/del
 
+        /// <summary>
+        /// Добавить ряд комбобоксов
+        /// </summary>
+
         private void AddOneMoreCB()
         {
             ControlSet set = contrSet[contrSet.Count-2];
@@ -178,7 +224,9 @@ namespace WindowsFormsApplication1
 
         }
 
-
+        /// <summary>
+        /// Удалить из контрола последний ряд элементов
+        /// </summary>
 
         private void RemoveLastItemFromControls()
         {
@@ -197,6 +245,11 @@ namespace WindowsFormsApplication1
             }
             
         }
+
+        /// <summary>
+        /// Создать ряд комбобоксов
+        /// </summary>
+        /// <param name="id"></param>
 
         private void CreateMyControl(int id)
         {
@@ -245,7 +298,13 @@ namespace WindowsFormsApplication1
 
         }
 
-
+        /// <summary>
+        /// Генирация и устоновка листа для комбобокса
+        /// </summary>
+        /// <param name="cb"></param>
+        /// <param name="table_name"></param>
+        /// <param name="colom_name"></param>
+        /// <returns></returns>
 
         public List<object> BindDataCB(ComboBox cb, String table_name, String colom_name)
         {
@@ -285,6 +344,11 @@ namespace WindowsFormsApplication1
         }
 
         #endregion
+
+        /// <summary>
+        /// Устоновка листа для 1 комбобокса
+        /// </summary>
+        /// <param name="cb"></param>
 
         public static void BindDataCB(ComboBox cb)
         {

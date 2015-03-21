@@ -30,6 +30,9 @@ namespace WindowsFormsApplication1
 
         private void button1_Click(object sender, EventArgs e)
         {
+
+            /// Отправка даныйх в дб
+
             long inn = Int64.Parse(textBoxINN.Text);
             long kpp = Int64.Parse(textBoxKPP.Text);
             long rs = Int64.Parse(textBoxRS.Text);
